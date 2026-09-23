@@ -1,7 +1,7 @@
-{
-  "name": "GKStreams Mirror List",
+﻿{
+  "name": "GKStreams",
   "short_name": "GKStreams",
-  "description": "Official informational mirror directory for GKStreams. No content hosted.",
+  "description": "Watch live sports streams for free. NFL, NBA, MLB, NHL, UFC, Soccer and more.",
   "start_url": "/",
   "icons": [
     {

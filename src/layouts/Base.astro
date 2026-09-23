@@ -16,7 +16,7 @@ const {
 } = Astro.props;
 
 const canonical = new URL(path, SITE.url).toString();
-const ogImage = new URL("/icons/web-app-manifest-192x192.png", SITE.url).toString();
+const ogImage = new URL("/icons/web-app-manifest-512x512.png", SITE.url).toString();
 
 let statusSnapshot: import("../data/config").StatusSnapshot | null = null;
 try {
