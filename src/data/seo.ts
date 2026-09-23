@@ -36,10 +36,10 @@ export const LEAGUES: LeagueSection[] = [
     nav: "NFL",
     h2: "GKStreams NFL — Watch Football Games Online",
     answer:
-      "Collect public NFL game links for the regular season, playoffs, and Super Bowl without creating an account.",
+      "GKStreams collects public NFL game links for the regular season, playoffs, and Super Bowl so fans can open a matchup without creating an account.",
     paragraphs: [
-      "Football fans often want one place that surfaces week-by-week game URLs. This aggregator gathers openly listed links across the NFL schedule so viewers can open a matchup and continue on the third-party page that already publishes that feed.",
-      "Because video is never stored here, the page stays light. When a domain moves, the mirror list above is refreshed on a short cycle so people seeking current access can open a working URL and reach the game.",
+      "Football fans often want one place that surfaces week-by-week game URLs. It gathers openly listed links across the NFL schedule so viewers can open a game and continue on the third-party page that already publishes that feed.",
+      "Because GKStreams does not store video, the list stays fast. When a domain moves, the mirrors above refresh on a short cycle so people seeking current access can open a working URL and reach the game.",
     ],
     bullets: [
       "NFL regular season and primetime windows",
@@ -52,15 +52,15 @@ export const LEAGUES: LeagueSection[] = [
     nav: "NBA",
     h2: "GKStreams NBA — Basketball Links Without Sign-Up",
     answer:
-      "Open NBA links for regular-season nights, the play-in, playoffs, and Finals — free, with no registration step on this directory.",
+      "Open NBA links on GKStreams for regular-season nights, the play-in, playoffs, and Finals — free, with no registration step.",
     paragraphs: [
-      "Basketball search intent spikes on back-to-back nights and deep into the postseason. The product description stays the same as the rest of the page: a directory-style lister that presents collected stream links instead of storing files on its own servers.",
-      "Use a live mirror above, then look for the matchup among available basketball links. Nothing here requires an account wall to browse the list.",
+      "Basketball search intent spikes on back-to-back nights and deep into the postseason. GKStreams works the same way across the site: it presents collected stream links instead of storing files on its own servers.",
+      "Use a live mirror above, then look for the matchup among available basketball links. It does not require an account wall to browse the list.",
     ],
     bullets: [
       "Regular season slate and national TV games",
       "Play-in tournament through the NBA Finals",
-      "Free directory access — no sign-up on this site",
+      "Free access — no sign-up required",
     ],
   },
   {
@@ -68,9 +68,9 @@ export const LEAGUES: LeagueSection[] = [
     nav: "MLB",
     h2: "GKStreams MLB — Baseball Game Link Directory",
     answer:
-      "Follow publicly listed MLB links through the long regular season and October without this site uploading game files.",
+      "Follow publicly listed MLB links on GKStreams through the long regular season and October. It never uploads game files itself.",
     paragraphs: [
-      "A 162-game calendar means people return often for “today’s games.” Baseball coverage follows the same non-hosting pattern used for other leagues: collect open links, show them to the audience, and leave hosting to third parties.",
+      "A 162-game calendar means people return often for “today’s games.” GKStreams baseball coverage follows the same non-hosting pattern as its other leagues: open links are collected for fans, and hosting stays with third parties.",
       "Open a working mirror above when you need current access, then use the available baseball links for the day’s card. Status timestamps show when the list was last checked.",
     ],
     bullets: [
@@ -84,9 +84,9 @@ export const LEAGUES: LeagueSection[] = [
     nav: "NHL",
     h2: "GKStreams NHL — Hockey Streams Collected as Links",
     answer:
-      "Find NHL game links for the regular season and Stanley Cup playoffs with free directory access and no sign-up.",
+      "Find NHL game links on GKStreams for the regular season and Stanley Cup playoffs — free, with no sign-up.",
     paragraphs: [
-      "Hockey sits beside the other major US leagues under the same aggregator model. Broadcasts are never stored here; the site only surfaces URLs fans can open when they want a game feed.",
+      "Hockey sits beside the other major US leagues under the same model. GKStreams never stores broadcasts; it only surfaces URLs fans can open for a game feed.",
       "Use the mirror section when the primary name is unavailable, then browse collected hockey links. Header anchors send NHL searches straight to this heading.",
     ],
     bullets: [
@@ -100,15 +100,15 @@ export const LEAGUES: LeagueSection[] = [
     nav: "UFC",
     h2: "GKStreams UFC — MMA Fight Night Links",
     answer:
-      "Browse public UFC and MMA fight-night links so you can follow cards without this directory hosting any video.",
+      "Browse public UFC and MMA fight-night links on GKStreams so you can follow cards without any video hosted here.",
     paragraphs: [
-      "Fight cards create sharp, event-driven search volume. The UFC section treats access as an aggregator of open links: paths to streams that already live elsewhere, with no PPV files uploaded here.",
-      "Check live mirrors before the main card, open an available domain, and look for the event link you need. Directory pages stay informational and point back to third-party hosts.",
+      "Fight cards create sharp, event-driven search volume. GKStreams treats access as an aggregator of open links: paths to streams that already live elsewhere, with no PPV files uploaded by the site.",
+      "Check live mirrors before the main card, open an available domain, and look for the event link you need. Pages stay informational and point back to third-party hosts.",
     ],
     bullets: [
       "Fight Night and numbered PPV cards",
       "Prelims and main-card link discovery",
-      "No files stored on this directory",
+      "No files stored on GKStreams",
     ],
   },
   {
@@ -116,10 +116,10 @@ export const LEAGUES: LeagueSection[] = [
     nav: "Soccer",
     h2: "GKStreams Soccer — Premier League, Champions League & More",
     answer:
-      "Soccer links cover the Premier League, Champions League, top European leagues, and international windows — free, without sign-up.",
+      "GKStreams soccer links cover the Premier League, Champions League, top European leagues, and international windows — free, without sign-up.",
     paragraphs: [
-      "Fans search across many competitions in one sitting. Soccer coverage keeps the same non-hosting rule: collected public links only, for people who want a quick path to a match page.",
-      "From weekend kickoffs to midweek European nights, open a working mirror above and follow available links. Unlike single-region directories, this list aims at multiple popular competitions together.",
+      "Fans search across many competitions in one sitting. GKStreams keeps the same non-hosting rule here: collected public links only, for people who want a quick path to a match page.",
+      "From weekend kickoffs to midweek European nights, open a working mirror above and follow available links. The list aims at multiple popular competitions together, not a single region.",
     ],
     bullets: [
       "Premier League, La Liga, Serie A, Bundesliga",
@@ -142,32 +142,32 @@ export const COMPETITORS: CompetitorSection[] = [
   {
     id: "methstreams",
     name: "Methstreams",
-    body: "Methstreams is another name people meet in free sports link searches. Readers who follow that query often also look for mirror lists when domains move. Both belong to the same broad category: directories that surface third-party game links rather than owning a broadcast network.",
+    body: "Methstreams is another name people meet in free sports link searches. Readers who follow that query often also look for mirror lists when domains move. GKStreams sits in the same broad category: a directory that surfaces third-party game links rather than owning a broadcast network.",
   },
   {
     id: "crackstreams",
     name: "Crackstreams",
-    body: "Crackstreams shows up often in free-sports autocomplete. Search interest around that brand overlaps with this directory on live US league nights. The distinction here is simple language only: collected public links, no sign-up for directory use, and no claim to host video.",
+    body: "Crackstreams shows up often in free-sports autocomplete. Search interest around that brand overlaps with GKStreams on live US league nights. The distinction is simple: it collects public links, needs no sign-up for directory use, and does not claim to host video.",
   },
   {
     id: "sportsurge",
     name: "Sportsurge",
-    body: "Sportsurge is a well-known hub-style aggregator in the same search neighborhood. Fans comparing Sportsurge with this page usually want the same outcome — a quick path to a working game link — while this site restates that it collects links and does not upload content.",
+    body: "Sportsurge is a well-known hub-style aggregator in the same search neighborhood. Fans comparing the two usually want the same outcome — a quick path to a working game link. GKStreams simply collects links and does not upload content.",
   },
   {
     id: "buffstreams",
     name: "Buffstreams",
-    body: "Buffstreams is a common alternative keyword when primary sites change address. The mirror list above exists so people searching that cluster can still reach current access here and open collected sports links without creating an account.",
+    body: "Buffstreams is a common alternative keyword when primary sites change address. The mirror list above exists so people searching that cluster can still reach current access and open collected sports links without creating an account.",
   },
   {
     id: "nflbite",
     name: "NFLbite",
-    body: "NFLbite is NFL-focused branding inside the free-link niche. The football section higher on this page covers the same schedule intent. Readers jumping between NFLbite-style queries and this directory typically care about two things: coverage and whether a mirror is online.",
+    body: "NFLbite is NFL-focused branding inside the free-link niche. The football section higher up covers the same schedule intent. Readers jumping between those queries and GKStreams typically care about coverage and whether a mirror is online.",
   },
   {
     id: "totalsportek",
     name: "Totalsportek",
-    body: "Totalsportek is widely searched for soccer-heavy listings. The soccer section above addresses similar international and domestic match intent while reminding readers that links are collected here and streams are not stored on this site.",
+    body: "Totalsportek is widely searched for soccer-heavy listings. The soccer section above addresses similar international and domestic match intent while restating that it collects links and does not store streams.",
   },
   {
     id: "streameast",
@@ -177,37 +177,37 @@ export const COMPETITORS: CompetitorSection[] = [
   {
     id: "hesgoal",
     name: "Hesgoal",
-    body: "Hesgoal is another competitor entity fans see next to soccer directories. A short mention helps connect related alternatives in search; this page remains a non-hosting link aggregator with free directory access and no sign-up.",
+    body: "Hesgoal is another competitor entity fans see next to soccer directories. A short mention helps connect related alternatives in search. GKStreams remains a non-hosting link aggregator with free directory access and no sign-up.",
   },
 ];
 
 export const FAQS: FaqItem[] = [
   {
     q: "What is GKStreams?",
-    a: "GKStreams is a sports streaming link aggregator. It collects publicly available game links for leagues such as the NFL, NBA, MLB, NHL, UFC, and soccer so fans can open them without a directory account.",
+    a: "It is a sports streaming link aggregator. GKStreams collects publicly available game links for leagues such as the NFL, NBA, MLB, NHL, UFC, and soccer so fans can open them without a directory account.",
   },
   {
-    q: "Does this site host or upload streams?",
-    a: "No. Video is never hosted, stored, or uploaded here. The directory only collects links to third-party pages; playback and copyright responsibility stay with the actual host of each link.",
+    q: "Does GKStreams host or upload streams?",
+    a: "No. Video is never hosted, stored, or uploaded on GKStreams. It only collects links to third-party pages; playback and copyright responsibility stay with the actual host of each link.",
   },
   {
-    q: "Is the directory free to use?",
-    a: "Yes. Access is free, and no sign-up is required to view the mirror list or open the collected sports links it points to.",
+    q: "Is GKStreams free to use?",
+    a: "Yes. It is free, and no sign-up is required to view the mirror list or open the collected sports links it points to.",
   },
   {
-    q: "How do I open a working mirror?",
-    a: "Use the live mirror list near the top of this page. Domains are checked on a short cycle; only currently working links are shown.",
+    q: "How do I open a working GKStreams mirror?",
+    a: "Use the live mirror list near the top of the page. Domains are checked on a short cycle; only currently working links are shown.",
   },
   {
-    q: "What sports are covered?",
-    a: "Coverage centers on popular US sports — NFL, NBA, MLB, NHL, UFC — plus soccer and other events listed under More Sports.",
+    q: "What sports are on GKStreams?",
+    a: "It covers popular US sports — NFL, NBA, MLB, NHL, UFC — plus soccer and other events listed under More Sports.",
   },
   {
-    q: "How is this similar to Sportsurge or Crackstreams?",
-    a: "They all sit in the free sports link directory category. This site is described strictly as an aggregator that collects links and does not host content itself.",
+    q: "How is GKStreams similar to Sportsurge or Crackstreams?",
+    a: "All three are free sports link directories. It collects links and does not host content itself.",
   },
   {
-    q: "Do I need an account?",
-    a: "No sign-up is required to use this mirror directory. Any login on a destination page belongs to that third-party host, not to this site.",
+    q: "Do I need an account for GKStreams?",
+    a: "No sign-up is required to use the mirror directory. Any login on a destination page belongs to that third-party host, not to GKStreams.",
   },
 ];
