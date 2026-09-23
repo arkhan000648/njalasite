@@ -1,8 +1,6 @@
 ---
 import Base from "../layouts/Base.astro";
 import MirrorCard from "../components/MirrorCard.astro";
-import FAQ from "../components/FAQ.astro";
-import TrustStrip from "../components/TrustStrip.astro";
 import { SITE, DOMAINS, formatCheckedAt, statusFor } from "../data/config";
 
 let snapshot: import("../data/config").StatusSnapshot | null = null;
@@ -28,67 +26,38 @@ const liveCards = DOMAINS.map((d) => {
 ---
 
 <Base path="/" title={SITE.title} description={SITE.description}>
-  <section class="hero">
+  <section class="intro">
     <div class="container">
-      <div class="hero__badge">Official mirror directory</div>
-      <h1>
-        Find a working
-        <em>GKStreams</em>
-        mirror
-        <span class="rule" aria-hidden="true"></span>
-      </h1>
-      <p class="hero__lead">
-        Official landing page for GKStreams. Only mirrors that are <strong>online right now</strong>
-        are listed — checked automatically every 5 minutes. No streams or media are hosted here.
+      <h1>GKStreams Official Mirror List</h1>
+      <p>
+        <strong data-live-count>{liveCards.length}</strong> mirrors online · checked every 5 minutes
       </p>
-      <div class="hero__meta">
-        <span><strong data-live-count>{liveCards.length}</strong> mirrors online</span>
-        <span aria-hidden="true">•</span>
-        <span>Last checked <strong class="updated-at" data-updated-at>{updated}</strong></span>
-      </div>
-      <div class="ticker" aria-live="polite">
-        <span class="ticker__live">● LIVE</span>
-        <span class="ticker__sep">//</span>
-        <span><span data-live-count>{liveCards.length}</span> ONLINE</span>
-        <span class="ticker__sep">//</span>
-        <span>CHECKED EVERY 5 MIN</span>
-      </div>
-    </div>
-  </section>
-
-  <section class="section" id="mirrors" aria-labelledby="mirrors-heading">
-    <div class="container">
-      <div class="section__head">
-        <div>
-          <h2 id="mirrors-heading">Working mirrors</h2>
-          <p>Only domains that passed the latest check appear here.</p>
-        </div>
-        <div class="updated-at" data-updated-at>{updated}</div>
-      </div>
-
-      <div class="mirror-grid" data-mirror-grid hidden={liveCards.length === 0}>
-        {liveCards.map((card) => (
-          <MirrorCard
-            url={card.url}
-            label={card.label}
-            status={card.status}
-            httpStatus={card.httpStatus}
-            ms={card.ms}
-            checkedAt={card.checkedAt}
-          />
-        ))}
-      </div>
-
-      <div class="empty-state" data-empty-state hidden={liveCards.length > 0}>
-        <h3>No mirrors online right now</h3>
-        <p>We re-check every 5 minutes. Refresh soon or try again shortly.</p>
-        <p class="updated-at" data-updated-at>{updated}</p>
-      </div>
+      <span class="updated-at" data-updated-at data-updated-prefix="Last updated: "
+        >Last updated: {updated}</span
+      >
     </div>
   </section>
 
   <div class="container">
-    <TrustStrip />
-    <FAQ />
+    <div class="divider" aria-hidden="true"></div>
+
+    <div class="mirror-list" data-mirror-grid hidden={liveCards.length === 0}>
+      {liveCards.map((card) => (
+        <MirrorCard
+          url={card.url}
+          label={card.label}
+          status={card.status}
+          httpStatus={card.httpStatus}
+          ms={card.ms}
+          checkedAt={card.checkedAt}
+        />
+      ))}
+    </div>
+
+    <div class="empty-state" data-empty-state hidden={liveCards.length > 0}>
+      <h2>No mirrors online</h2>
+      <p>We re-check every 5 minutes. Please try again shortly.</p>
+      <p class="updated-at" data-updated-at>{updated}</p>
+    </div>
   </div>
 </Base>

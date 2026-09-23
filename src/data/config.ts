@@ -4,11 +4,11 @@ export const SITE = {
   name: "GKStreams",
   title: "GKStreams — Official Mirror List | Working Domains",
   description:
-    "Find the current working GKStreams mirror domains. This official landing page lists live GKStreams mirrors and checks their status every 5 minutes.",
+    "Official GKStreams mirror list. Live working domains only — checked every 5 minutes. No content hosted here.",
   url: "https://gkstreams.com",
   email: "dmca@gkstreams.com",
   footerDisclaimer:
-    "GKStreams is an informational directory of publicly available mirror links only. We do not host, store, stream, embed, or provide any media or files. Links lead to third-party sites we do not control. Trademarks and content belong to their respective owners. To request link removal or send a DMCA notice, contact us — valid notices are answered promptly.",
+    "This website only lists publicly available GKStreams mirror links. We do not host, store, or stream any content. For removal requests, contact us.",
 } as const;
 
 export interface MirrorDomain {

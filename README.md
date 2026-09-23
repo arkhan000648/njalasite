@@ -49,4 +49,4 @@ npm run build
 
 - Fine-grained PAT is stored **only** in cron-job.org (never in this repo).
 - Rotate the PAT every 90 days.
-- This site is a directory of links only; keep it that way for DMCA safety (`/disclaimer/`).
+- This site is a one-page link directory only; keep DMCA copy in the footer.

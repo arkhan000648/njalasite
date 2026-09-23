@@ -8,7 +8,7 @@ interface Props {
   checkedAt?: string;
 }
 
-const { url, label, status, httpStatus, ms, checkedAt } = Astro.props;
+const { url, status, ms, httpStatus, checkedAt } = Astro.props;
 
 const host = (() => {
   try {
@@ -21,37 +21,27 @@ const host = (() => {
 const metaParts: string[] = [];
 if (ms != null) metaParts.push(`${ms} ms`);
 if (httpStatus) metaParts.push(`HTTP ${httpStatus}`);
-if (checkedAt && checkedAt !== new Date(0).toISOString()) metaParts.push(`checked ${checkedAt}`);
+if (checkedAt && checkedAt !== new Date(0).toISOString()) {
+  metaParts.push(`checked ${checkedAt}`);
+}
 const meta = metaParts.join(" · ") || "Verified online";
 ---
 
-<article
+<a
   class="mirror-card is-live"
+  href={url}
   data-mirror-card
   data-url={url}
+  target="_blank"
+  rel="noopener noreferrer"
   hidden={status !== "live"}
 >
   <div>
-    <p class="mirror-card__label">{label}</p>
     <p class="mirror-card__host">{host}</p>
+    <span class="mirror-card__meta" data-status-meta>{meta}</span>
   </div>
-
-  <div class="mirror-card__actions">
-    <span class="badge badge--live" data-status-badge role="status" aria-label="Status: Online">
-      <span class="badge__dot" aria-hidden="true"></span>
-      Online
-    </span>
-    <a
-      class="btn btn--primary"
-      href={url}
-      data-visit
-      target="_blank"
-      rel="noopener noreferrer"
-    >
-      Open mirror
-      <span aria-hidden="true">↗</span>
-    </a>
-  </div>
-
-  <div class="mirror-card__meta" data-status-meta>{meta}</div>
-</article>
+  <span class="badge badge--live" data-status-badge role="status" aria-label="Status: Online">
+    <span class="badge__dot" aria-hidden="true"></span>
+    Online
+  </span>
+</a>

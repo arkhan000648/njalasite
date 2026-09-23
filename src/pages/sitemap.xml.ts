@@ -9,16 +9,6 @@ export const GET: APIRoute = () => {
     <changefreq>hourly</changefreq>
     <priority>1.0</priority>
   </url>
-  <url>
-    <loc>${SITE.url}/disclaimer/</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>${SITE.url}/privacy/</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
 </urlset>`;
 
   return new Response(xml, {

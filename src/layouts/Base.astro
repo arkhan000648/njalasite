@@ -1,5 +1,5 @@
 ---
-import { SITE, DOMAINS, formatCheckedAt } from "../data/config";
+import { SITE, formatCheckedAt } from "../data/config";
 import "../styles/global.css";
 
 interface Props {
@@ -25,30 +25,11 @@ try {
   statusSnapshot = null;
 }
 
-const liveDomains = DOMAINS.filter((d) => {
-  const key = d.url.replace(/\/+$/, "").toLowerCase();
-  const entry = statusSnapshot?.domains?.find(
-    (x) => x.url.replace(/\/+$/, "").toLowerCase() === key
-  );
-  return entry?.status === "live";
-});
-
+const liveDomains = (statusSnapshot?.domains ?? []).filter((d) => d.status === "live");
 const liveCount = liveDomains.length;
 const updated = formatCheckedAt(statusSnapshot?.updatedAt);
-
-const pillClass =
-  liveCount > 0
-    ? "status-pill is-live"
-    : statusSnapshot?.updatedAt && statusSnapshot.updatedAt !== new Date(0).toISOString()
-      ? "status-pill is-down"
-      : "status-pill";
-
-const pillLabel =
-  liveCount > 0
-    ? `${liveCount} online`
-    : statusSnapshot?.updatedAt && statusSnapshot.updatedAt !== new Date(0).toISOString()
-      ? "checking…"
-      : "checking…";
+const hasChecked =
+  !!statusSnapshot?.updatedAt && statusSnapshot.updatedAt !== new Date(0).toISOString();
 
 const websiteJsonLd = {
   "@context": "https://schema.org",
@@ -56,45 +37,6 @@ const websiteJsonLd = {
   name: SITE.name,
   url: SITE.url,
   description: SITE.description,
-};
-
-const faqJsonLd = {
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  mainEntity: [
-    {
-      "@type": "Question",
-      name: "Is GKStreams down right now?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "This page only lists mirror domains that are currently online. If you see mirrors here, they passed our last automated check. Checks run every 5 minutes.",
-      },
-    },
-    {
-      "@type": "Question",
-      name: "What is a GKStreams mirror?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "A mirror is an alternate address for the same service. This site is an informational directory of those addresses only — it does not host streams, embeds, or media.",
-      },
-    },
-    {
-      "@type": "Question",
-      name: "How often is the mirror list updated?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "Automated checks run every 5 minutes. Domains that are down are removed from this list until they recover.",
-      },
-    },
-    {
-      "@type": "Question",
-      name: "Does this website host sports streams?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "No. This is an informational landing page only. It does not host, store, embed, or provide any media, streams, or broadcasts. It only links to third-party destinations.",
-      },
-    },
-  ],
 };
 ---
 
@@ -110,7 +52,7 @@ const faqJsonLd = {
     <link rel="icon" href="/icons/favicon.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
     <link rel="manifest" href="/manifest.webmanifest" />
-    <meta name="theme-color" content="#e10600" />
+    <meta name="theme-color" content="#0a0a0a" />
     <meta name="robots" content="index, follow, max-image-preview:large" />
 
     <meta property="og:type" content="website" />
@@ -125,28 +67,19 @@ const faqJsonLd = {
     <meta name="twitter:image" content={ogImage} />
 
     <script type="application/ld+json" set:html={JSON.stringify(websiteJsonLd)} />
-    <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to content</a>
 
-    <header class="site-header">
-      <div class="container site-header__inner">
+    <header class="topbar">
+      <div class="container topbar__inner">
         <a class="brand" href="/">
-          <img class="brand__logo" src="/logo.svg" width="36" height="36" alt="GKStreams logo" />
-          <span class="brand__text">GK<span>Streams</span></span>
+          <img src="/logo.svg" width="28" height="28" alt="" />
+          <div>GK<span>Streams</span></div>
         </a>
-
-        <nav class="nav" aria-label="Primary">
-          <a href="/#mirrors" aria-current={path === "/" ? "page" : undefined}>Mirrors</a>
-          <a href="/#faq">FAQ</a>
-          <a href="/disclaimer/" aria-current={path === "/disclaimer/" ? "page" : undefined}>Disclaimer</a>
-          <a href="/privacy/" aria-current={path === "/privacy/" ? "page" : undefined}>Privacy</a>
-        </nav>
-
-        <div class={pillClass} data-live-pill data-live={String(liveCount)}>
+        <div class:list={["status-pill", liveCount > 0 && "is-live"]} data-live-pill>
           <span class="status-pill__dot" aria-hidden="true"></span>
-          <span data-live-label>{pillLabel}</span>
+          <span data-live-label>{hasChecked && liveCount > 0 ? `${liveCount} online` : "checking…"}</span>
         </div>
       </div>
     </header>
@@ -157,41 +90,17 @@ const faqJsonLd = {
 
     <footer class="site-footer">
       <div class="container">
-        <div class="site-footer__grid">
-          <div>
-            <div class="footer-brand">
-              <img src="/logo.svg" width="40" height="40" alt="" />
-              <strong>GKStreams Mirrors</strong>
-            </div>
-            <p class="footer-disclaimer">{SITE.footerDisclaimer}</p>
-          </div>
-
-          <div>
-            <h3>Navigate</h3>
-            <ul>
-              <li><a href="/#mirrors">Mirror list</a></li>
-              <li><a href="/#faq">FAQ</a></li>
-              <li><a href="/disclaimer/">Disclaimer &amp; DMCA</a></li>
-              <li><a href="/privacy/">Privacy policy</a></li>
-            </ul>
-          </div>
-
-          <div>
-            <h3>Contact</h3>
-            <ul>
-              <li><a href={`mailto:${SITE.email}`}>{SITE.email}</a></li>
-              <li><span style="color:var(--text-muted)">Status checked every 5 minutes</span></li>
-              <li>
-                <span class="updated-at" data-updated-at>{updated}</span>
-              </li>
-            </ul>
-          </div>
-        </div>
-
-        <div class="site-footer__bottom">
-          <span>© {new Date().getFullYear()} {SITE.name}. Directory page only — no content hosted.</span>
-          <span>Last status update: <span class="updated-at" data-updated-at>{updated}</span></span>
-        </div>
+        <p>
+          This website only lists publicly available GKStreams mirror links. We do not
+          host, store, or stream any content. Links go to third-party sites we do not
+          control. For removal requests: <a href={`mailto:${SITE.email}`}>{SITE.email}</a>
+        </p>
+        <p class="site-footer__copy">
+          © {new Date().getFullYear()} {SITE.name} — directory only. ·
+          <span class="updated-at" data-updated-at data-updated-prefix="Updated "
+            >Updated {updated}</span
+          >
+        </p>
       </div>
     </footer>
 
@@ -206,7 +115,7 @@ const faqJsonLd = {
         var label = document.querySelector("[data-live-label]");
         var grid = document.querySelector("[data-mirror-grid]");
         var empty = document.querySelector("[data-empty-state]");
-        var heroCount = document.querySelectorAll("[data-live-count]");
+        var introCount = document.querySelectorAll("[data-live-count]");
 
         function applyStatus(data) {
           if (!data || !Array.isArray(data.domains)) return;
@@ -225,7 +134,6 @@ const faqJsonLd = {
             if (entry) {
               live++;
               card.hidden = false;
-              card.classList.add("is-live");
               var badge = card.querySelector("[data-status-badge]");
               if (badge) {
                 badge.className = "badge badge--live";
@@ -238,8 +146,6 @@ const faqJsonLd = {
                 if (data.updatedAt) bits.push("checked " + data.updatedAt);
                 meta.textContent = bits.join(" · ");
               }
-              var btn = card.querySelector("[data-visit]");
-              if (btn) btn.classList.remove("is-disabled");
             } else {
               card.hidden = true;
             }
@@ -252,7 +158,10 @@ const faqJsonLd = {
               var existing = Array.prototype.find.call(
                 grid.querySelectorAll("[data-mirror-card]"),
                 function (el) {
-                  return (el.getAttribute("data-url") || "").replace(/\/+$/, "").toLowerCase() === key;
+                  return (
+                    (el.getAttribute("data-url") || "").replace(/\/+$/, "").toLowerCase() ===
+                    key
+                  );
                 }
               );
               if (existing) {
@@ -260,26 +169,25 @@ const faqJsonLd = {
                 return;
               }
               var host = entry.url.replace(/^https?:\/\//, "").replace(/\/+$/, "");
-              var article = document.createElement("article");
-              article.className = "mirror-card is-live";
-              article.setAttribute("data-mirror-card", "");
-              article.setAttribute("data-url", entry.url);
-              article.innerHTML =
-                '<div><p class="mirror-card__label">Mirror</p>' +
-                '<p class="mirror-card__host"></p></div>' +
-                '<div class="mirror-card__actions">' +
-                '<span class="badge badge--live" data-status-badge><span class="badge__dot"></span>Online</span>' +
-                '<a class="btn btn--primary" data-visit target="_blank" rel="noopener noreferrer">Open mirror ↗</a>' +
-                "</div>" +
-                '<div class="mirror-card__meta" data-status-meta></div>';
-              article.querySelector(".mirror-card__host").textContent = host;
-              article.querySelector("[data-visit]").href = entry.url;
+              var a = document.createElement("a");
+              a.className = "mirror-card is-live";
+              a.href = entry.url;
+              a.target = "_blank";
+              a.rel = "noopener noreferrer";
+              a.setAttribute("data-mirror-card", "");
+              a.setAttribute("data-url", entry.url);
+              a.innerHTML =
+                '<div><p class="mirror-card__host"></p>' +
+                '<span class="mirror-card__meta" data-status-meta></span></div>' +
+                '<span class="badge badge--live" data-status-badge>' +
+                '<span class="badge__dot"></span>Online</span>';
+              a.querySelector(".mirror-card__host").textContent = host;
               var bits = [];
               if (entry.ms != null) bits.push(entry.ms + " ms");
               if (data.updatedAt) bits.push("checked " + data.updatedAt);
-              article.querySelector("[data-status-meta]").textContent = bits.join(" · ");
+              a.querySelector("[data-status-meta]").textContent = bits.join(" · ");
               live++;
-              grid.appendChild(article);
+              grid.appendChild(a);
             });
           }
 
@@ -287,18 +195,19 @@ const faqJsonLd = {
           if (grid) grid.hidden = live === 0;
 
           if (pill && label) {
-            pill.classList.remove("is-live", "is-down", "is-degraded");
-            if (live > 0) pill.classList.add("is-live");
-            else pill.classList.add("is-down");
+            pill.classList.toggle("is-live", live > 0);
             label.textContent = live > 0 ? live + " online" : "checking…";
           }
 
-          heroCount.forEach(function (el) {
+          introCount.forEach(function (el) {
             el.textContent = String(live);
           });
 
           document.querySelectorAll("[data-updated-at]").forEach(function (el) {
-            if (data.updatedAt) el.textContent = data.updatedAt;
+            if (data.updatedAt) {
+              el.textContent =
+                (el.getAttribute("data-updated-prefix") || "") + data.updatedAt;
+            }
           });
         }
 
