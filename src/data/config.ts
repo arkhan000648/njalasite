@@ -8,7 +8,7 @@ export const SITE = {
   url: "https://gkstreams.com",
   email: "dmca@gkstreams.com",
   footerDisclaimer:
-    "GKStreams is an informational directory only. We do not host, store, or provide any streams, media, or broadcasts. Links lead to third-party sites we do not control. Trademarks and content belong to their respective owners. For link removal or DMCA notices, contact us — valid notices are answered promptly.",
+    "GKStreams is an informational directory of publicly available mirror links only. We do not host, store, stream, embed, or provide any media or files. Links lead to third-party sites we do not control. Trademarks and content belong to their respective owners. To request link removal or send a DMCA notice, contact us — valid notices are answered promptly.",
 } as const;
 
 export interface MirrorDomain {

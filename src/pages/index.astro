@@ -3,13 +3,7 @@ import Base from "../layouts/Base.astro";
 import MirrorCard from "../components/MirrorCard.astro";
 import FAQ from "../components/FAQ.astro";
 import TrustStrip from "../components/TrustStrip.astro";
-import {
-  SITE,
-  DOMAINS,
-  liveCount,
-  formatCheckedAt,
-  statusFor,
-} from "../data/config";
+import { SITE, DOMAINS, formatCheckedAt, statusFor } from "../data/config";
 
 let snapshot: import("../data/config").StatusSnapshot | null = null;
 try {
@@ -19,10 +13,9 @@ try {
   snapshot = null;
 }
 
-const counts = liveCount(snapshot);
 const updated = formatCheckedAt(snapshot?.updatedAt);
 
-const cards = DOMAINS.map((d) => {
+const liveCards = DOMAINS.map((d) => {
   const s = statusFor(snapshot, d.url);
   return {
     ...d,
@@ -31,23 +24,34 @@ const cards = DOMAINS.map((d) => {
     ms: s.ms,
     checkedAt: snapshot?.updatedAt,
   };
-});
+}).filter((c) => c.status === "live");
 ---
 
 <Base path="/" title={SITE.title} description={SITE.description}>
   <section class="hero">
     <div class="container">
       <div class="hero__badge">Official mirror directory</div>
-      <h1>Find a working <em>GKStreams</em> mirror</h1>
+      <h1>
+        Find a working
+        <em>GKStreams</em>
+        mirror
+        <span class="rule" aria-hidden="true"></span>
+      </h1>
       <p class="hero__lead">
-        This is the official informational landing page for GKStreams. We list current
-        mirror domains and show which ones are reachable — checked automatically every
-        5 minutes. No streams or media are hosted on this site.
+        Official landing page for GKStreams. Only mirrors that are <strong>online right now</strong>
+        are listed — checked automatically every 5 minutes. No streams or media are hosted here.
       </p>
       <div class="hero__meta">
-        <span><strong data-live-count>{counts.live}/{counts.total}</strong> mirrors live</span>
+        <span><strong data-live-count>{liveCards.length}</strong> mirrors online</span>
         <span aria-hidden="true">•</span>
         <span>Last checked <strong class="updated-at" data-updated-at>{updated}</strong></span>
+      </div>
+      <div class="ticker" aria-live="polite">
+        <span class="ticker__live">● LIVE</span>
+        <span class="ticker__sep">//</span>
+        <span><span data-live-count>{liveCards.length}</span> ONLINE</span>
+        <span class="ticker__sep">//</span>
+        <span>CHECKED EVERY 5 MIN</span>
       </div>
     </div>
   </section>
@@ -56,14 +60,14 @@ const cards = DOMAINS.map((d) => {
     <div class="container">
       <div class="section__head">
         <div>
-          <h2 id="mirrors-heading">Mirror list</h2>
-          <p>Choose any domain marked LIVE. Status refreshes automatically.</p>
+          <h2 id="mirrors-heading">Working mirrors</h2>
+          <p>Only domains that passed the latest check appear here.</p>
         </div>
         <div class="updated-at" data-updated-at>{updated}</div>
       </div>
 
-      <div class="mirror-grid">
-        {cards.map((card) => (
+      <div class="mirror-grid" data-mirror-grid hidden={liveCards.length === 0}>
+        {liveCards.map((card) => (
           <MirrorCard
             url={card.url}
             label={card.label}
@@ -73,6 +77,12 @@ const cards = DOMAINS.map((d) => {
             checkedAt={card.checkedAt}
           />
         ))}
+      </div>
+
+      <div class="empty-state" data-empty-state hidden={liveCards.length > 0}>
+        <h3>No mirrors online right now</h3>
+        <p>We re-check every 5 minutes. Refresh soon or try again shortly.</p>
+        <p class="updated-at" data-updated-at>{updated}</p>
       </div>
     </div>
   </section>

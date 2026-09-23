@@ -122,13 +122,18 @@ async function main() {
   }
 
   const json = JSON.stringify(snapshot, null, 2) + "\n";
+  const liveOnly = {
+    updatedAt: snapshot.updatedAt,
+    domains: snapshot.domains.filter((d) => d.status === "live"),
+  };
+  const publicJson = JSON.stringify(liveOnly, null, 2) + "\n";
   await mkdir(dirname(statusDataPath), { recursive: true });
   await mkdir(dirname(statusPublicPath), { recursive: true });
   await writeFile(statusDataPath, json, "utf8");
-  await writeFile(statusPublicPath, json, "utf8");
+  await writeFile(statusPublicPath, publicJson, "utf8");
 
   const live = results.filter((r) => r.status === "live").length;
-  console.log(`Done: ${live}/${results.length} live. Status written.`);
+  console.log(`Done: ${live}/${results.length} live. Status written (public: live only).`);
 }
 
 main().catch((err) => {
