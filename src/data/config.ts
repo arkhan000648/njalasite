@@ -2,7 +2,7 @@ import domainsJson from "./domains.json";
 
 export const SITE = {
   name: "GKStreams",
-  title: "GKStreams — Free Sports Link Aggregator | NFL, NBA, MLB",
+  title: "GKStreams",
   description:
     "GKStreams is a free sports streaming link aggregator for NFL, NBA, MLB, NHL, UFC, and soccer. It does not host content — see working mirrors, checked every 5 minutes.",
   url: "https://gkstreams.com",
