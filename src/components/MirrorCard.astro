@@ -1,0 +1,65 @@
+---
+interface Props {
+  url: string;
+  label: string;
+  status: "live" | "down" | "unknown";
+  httpStatus?: number;
+  ms?: number;
+  checkedAt?: string;
+}
+
+const { url, label, status, httpStatus, ms, checkedAt } = Astro.props;
+
+const host = (() => {
+  try {
+    return new URL(url).host;
+  } catch {
+    return url;
+  }
+})();
+
+const metaParts: string[] = [];
+if (ms != null) metaParts.push(`${ms} ms`);
+if (httpStatus) metaParts.push(`HTTP ${httpStatus}`);
+if (checkedAt && checkedAt !== new Date(0).toISOString()) metaParts.push(`checked ${checkedAt}`);
+const meta = metaParts.join(" · ") || "Status pending first check";
+
+const statusText =
+  status === "live" ? "Live" : status === "down" ? "Down" : "Unknown";
+---
+
+<article
+  class:list={["mirror-card", status === "live" && "is-live", status === "down" && "is-down"]}
+  data-mirror-card
+  data-url={url}
+>
+  <div class="mirror-card__top">
+    <div>
+      <p class="mirror-card__label">{label}</p>
+      <p class="mirror-card__host">{host}</p>
+    </div>
+    <span
+      class:list={["badge", `badge--${status}`]}
+      data-status-badge
+      role="status"
+      aria-label={`Status: ${statusText}`}
+    >
+      <span class="badge__dot" aria-hidden="true"></span>
+      {statusText}
+    </span>
+  </div>
+
+  <div class="mirror-card__meta" data-status-meta>{meta}</div>
+
+  <a
+    class:list={["btn", "btn--primary", status === "down" && "is-disabled"]}
+    href={url}
+    data-visit
+    target="_blank"
+    rel="noopener noreferrer"
+    aria-disabled={status === "down" ? "true" : undefined}
+  >
+    Visit mirror
+    <span aria-hidden="true">↗</span>
+  </a>
+</article>

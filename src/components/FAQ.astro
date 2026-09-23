@@ -1,0 +1,55 @@
+<section class="section" id="faq" aria-labelledby="faq-heading">
+  <div class="section__head">
+    <div>
+      <h2 id="faq-heading">Frequently asked questions</h2>
+      <p>Quick answers about this mirror list and how status checks work.</p>
+    </div>
+  </div>
+
+  <div class="faq">
+    <details open>
+      <summary>Is GKStreams down right now?</summary>
+      <p>
+        Check the mirror cards above. Each domain shows LIVE or DOWN and is re-checked
+        every 5 minutes. If every mirror is DOWN, wait a few minutes and refresh —
+        temporary outages are shown automatically when a mirror recovers.
+      </p>
+    </details>
+
+    <details>
+      <summary>What is a GKStreams mirror?</summary>
+      <p>
+        A mirror is an alternate address for the same service, used when the primary
+        domain is unavailable. This landing page only <strong>lists</strong> those
+        addresses. It does not host streams, embed players, or store any media.
+      </p>
+    </details>
+
+    <details>
+      <summary>How often is status updated?</summary>
+      <p>
+        Automated checks run every 5 minutes from an external cron job. The page is
+        rebuilt with the latest LIVE/DOWN state, and a small script can refresh badges
+        from <code>/status.json</code> without reloading.
+      </p>
+    </details>
+
+    <details>
+      <summary>Does this website host any streams?</summary>
+      <p>
+        No. This is an informational directory only. There is no video, audio, embed,
+        or playback functionality on this domain. Links go to third-party sites we do
+        not control. See our <a href="/disclaimer/">disclaimer and DMCA policy</a>.
+      </p>
+    </details>
+
+    <details>
+      <summary>Why do I see different results than before?</summary>
+      <p>
+        Network conditions change. A host may be temporarily unreachable from the
+        checker’s network while still working for you — or the reverse. Try another
+        LIVE mirror if one fails.
+      </p>
+    </details>
+  </div>
+</section>

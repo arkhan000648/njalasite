@@ -1,0 +1,84 @@
+---
+import Base from "../layouts/Base.astro";
+import MirrorCard from "../components/MirrorCard.astro";
+import FAQ from "../components/FAQ.astro";
+import TrustStrip from "../components/TrustStrip.astro";
+import {
+  SITE,
+  DOMAINS,
+  liveCount,
+  formatCheckedAt,
+  statusFor,
+} from "../data/config";
+
+let snapshot: import("../data/config").StatusSnapshot | null = null;
+try {
+  const mod = await import("../data/status.json");
+  snapshot = (mod.default ?? mod) as import("../data/config").StatusSnapshot;
+} catch {
+  snapshot = null;
+}
+
+const counts = liveCount(snapshot);
+const updated = formatCheckedAt(snapshot?.updatedAt);
+
+const cards = DOMAINS.map((d) => {
+  const s = statusFor(snapshot, d.url);
+  return {
+    ...d,
+    status: s.status,
+    httpStatus: s.httpStatus,
+    ms: s.ms,
+    checkedAt: snapshot?.updatedAt,
+  };
+});
+---
+
+<Base path="/" title={SITE.title} description={SITE.description}>
+  <section class="hero">
+    <div class="container">
+      <div class="hero__badge">Official mirror directory</div>
+      <h1>Find a working <em>GKStreams</em> mirror</h1>
+      <p class="hero__lead">
+        This is the official informational landing page for GKStreams. We list current
+        mirror domains and show which ones are reachable — checked automatically every
+        5 minutes. No streams or media are hosted on this site.
+      </p>
+      <div class="hero__meta">
+        <span><strong data-live-count>{counts.live}/{counts.total}</strong> mirrors live</span>
+        <span aria-hidden="true">•</span>
+        <span>Last checked <strong class="updated-at" data-updated-at>{updated}</strong></span>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="mirrors" aria-labelledby="mirrors-heading">
+    <div class="container">
+      <div class="section__head">
+        <div>
+          <h2 id="mirrors-heading">Mirror list</h2>
+          <p>Choose any domain marked LIVE. Status refreshes automatically.</p>
+        </div>
+        <div class="updated-at" data-updated-at>{updated}</div>
+      </div>
+
+      <div class="mirror-grid">
+        {cards.map((card) => (
+          <MirrorCard
+            url={card.url}
+            label={card.label}
+            status={card.status}
+            httpStatus={card.httpStatus}
+            ms={card.ms}
+            checkedAt={card.checkedAt}
+          />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <div class="container">
+    <TrustStrip />
+    <FAQ />
+  </div>
+</Base>

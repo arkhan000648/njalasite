@@ -1,0 +1,23 @@
+{
+  "name": "GKStreams Mirror List",
+  "short_name": "GKStreams",
+  "description": "Official informational mirror directory for GKStreams. No content hosted.",
+  "start_url": "/",
+  "icons": [
+    {
+      "src": "/icons/web-app-manifest-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/web-app-manifest-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "theme_color": "#070a12",
+  "background_color": "#070a12",
+  "display": "standalone"
+}

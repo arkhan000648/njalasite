@@ -1,0 +1,60 @@
+name: Check domains and deploy
+
+on:
+  repository_dispatch:
+    types: [check-domains]
+  workflow_dispatch:
+  # Optional GitHub-side backup (keep disabled if cron-job.org is sole trigger):
+  # schedule:
+  #   - cron: "*/5 * * * *"
+  push:
+    branches: [main, master]
+
+concurrency:
+  group: pages-deploy
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Check mirror domains
+        run: node scripts/check-domains.mjs
+        env:
+          CHECK_TIMEOUT_MS: "5000"
+
+      - name: Build
+        run: npm run build
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

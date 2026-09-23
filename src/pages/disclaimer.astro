@@ -1,0 +1,79 @@
+---
+import Base from "../layouts/Base.astro";
+import { SITE } from "../data/config";
+
+const title = `Disclaimer & DMCA — ${SITE.name}`;
+const description =
+  "Legal disclaimer, third-party link policy, and DMCA takedown process for the GKStreams informational mirror directory.";
+---
+
+<Base path="/disclaimer/" title={title} description={description}>
+  <section class="section">
+    <div class="container prose">
+      <h1>Disclaimer &amp; DMCA</h1>
+      <p>
+        <strong>{SITE.name}</strong> (this website) is an informational directory. It
+        does not host, store, embed, transmit, or provide any media, streams,
+        broadcasts, audio, video, or other copyrighted content.
+      </p>
+
+      <h2>1. Nature of this site</h2>
+      <p>
+        This site publishes a list of third-party domain names and basic availability
+        status (for example, “LIVE” or “DOWN”) for informational purposes. Status is
+        determined by automated HTTP checks. Inclusion of a link does not mean we own,
+        operate, control, or endorse the destination.
+      </p>
+
+      <h2>2. Third-party content</h2>
+      <p>
+        All content on linked destinations belongs to their respective owners. We have
+        no control over third-party sites, their availability, legality, or content.
+        Visiting external links is at your own risk and subject to those sites’ terms.
+      </p>
+
+      <h2>3. No infringement intended</h2>
+      <p>
+        If you believe any link on this site points to material that infringes your
+        rights, you may request removal using the contact below. We do not condone
+        infringement and will act on valid notices promptly.
+      </p>
+
+      <h2>4. DMCA takedown requests</h2>
+      <p>
+        To request removal of a link or other material, email{" "}
+        <a href={`mailto:${SITE.email}`}>{SITE.email}</a> with:
+      </p>
+      <ul>
+        <li>Your physical or electronic signature</li>
+        <li>Identification of the copyrighted work (if applicable) and the material on this site</li>
+        <li>The exact URL(s) on this site you want removed</li>
+        <li>Your contact information and a good-faith statement</li>
+        <li>A statement, under penalty of perjury, that the notice is accurate and you are authorized to act</li>
+      </ul>
+      <p>
+        We aim to respond to complete notices quickly and typically remove valid
+        complained-of links promptly after verification. This site is a directory of
+        URLs only; we cannot remove content hosted elsewhere.
+      </p>
+
+      <h2>5. Trademarks &amp; branding</h2>
+      <p>
+        Trademarks, team names, league names, and logos referenced on linked sites
+        belong to their respective owners. This site uses only its own branding for
+        identification of the directory itself.
+      </p>
+
+      <h2>6. No warranty</h2>
+      <p>
+        Information is provided “as is” without warranties of any kind. Status data may
+        be delayed or inaccurate due to network conditions. We are not liable for
+        decisions made based on this directory.
+      </p>
+
+      <p>
+        <a class="btn btn--ghost" href="/">← Back to mirror list</a>
+      </p>
+    </div>
+  </section>
+</Base>

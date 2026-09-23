@@ -1,0 +1,280 @@
+---
+import { SITE, DOMAINS, liveCount, formatCheckedAt } from "../data/config";
+import "../styles/global.css";
+
+interface Props {
+  title?: string;
+  description?: string;
+  path?: string;
+}
+
+const {
+  title = SITE.title,
+  description = SITE.description,
+  path = "/",
+} = Astro.props;
+
+const canonical = new URL(path, SITE.url).toString();
+const ogImage = new URL("/icons/web-app-manifest-192x192.png", SITE.url).toString();
+
+// Snapshot is injected at build time from src/data/status.json (written by CI)
+let statusSnapshot: import("../data/config").StatusSnapshot | null = null;
+try {
+  const mod = await import("../data/status.json");
+  statusSnapshot = (mod.default ?? mod) as import("../data/config").StatusSnapshot;
+} catch {
+  statusSnapshot = null;
+}
+
+const counts = liveCount(statusSnapshot);
+const updated = formatCheckedAt(statusSnapshot?.updatedAt);
+
+const websiteJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: SITE.name,
+  url: SITE.url,
+  description: SITE.description,
+  potentialAction: {
+    "@type": "SearchAction",
+    target: `${SITE.url}/?q={search_term_string}`,
+    "query-input": "required name=search_term_string",
+  },
+};
+
+const faqJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: [
+    {
+      "@type": "Question",
+      name: "Is GKStreams down right now?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "This page lists the current status of GKStreams mirror domains and refreshes every 5 minutes. If a mirror shows LIVE, it should open normally. If all mirrors show DOWN, please check again in a few minutes.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "What is a GKStreams mirror?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "A mirror is an alternate official domain that points to the same GKStreams experience when the primary address is unavailable. This site only lists those domains — it does not host any content.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "How often is the mirror list updated?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Automated checks run every 5 minutes. Domain status (LIVE or DOWN) and the last-checked time are shown next to each mirror.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "Does this website host sports streams?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "No. This is an informational landing page only. It does not host, store, embed, or provide any media, streams, or broadcasts. It only links to third-party destinations.",
+      },
+    },
+  ],
+};
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="icon" href="/icons/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <meta name="theme-color" content="#0a0a0f" />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={SITE.name} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <script type="application/ld+json" set:html={JSON.stringify(websiteJsonLd)} />
+    <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <header class="site-header">
+      <div class="container site-header__inner">
+        <a class="brand" href="/">
+          <img class="brand__logo" src="/logo.svg" width="36" height="36" alt="GKStreams logo" />
+          <span class="brand__text">GK<span>Streams</span></span>
+        </a>
+
+        <nav class="nav" aria-label="Primary">
+          <a href="/#mirrors" aria-current={path === "/" ? "page" : undefined}>Mirrors</a>
+          <a href="/#faq">FAQ</a>
+          <a href="/disclaimer/" aria-current={path === "/disclaimer/" ? "page" : undefined}>Disclaimer</a>
+          <a href="/privacy/" aria-current={path === "/privacy/" ? "page" : undefined}>Privacy</a>
+        </nav>
+
+        <div
+          class:list={[
+            "status-pill",
+            counts.total > 0 && counts.live === counts.total && "is-live",
+            counts.live === 0 && "is-down",
+            counts.live > 0 && counts.live < counts.total && "is-degraded",
+          ]}
+          data-live-pill
+          data-live={String(counts.live)}
+          data-total={String(counts.total)}
+        >
+          <span class="status-pill__dot" aria-hidden="true"></span>
+          <span data-live-label>{counts.live}/{counts.total} mirrors live</span>
+        </div>
+      </div>
+    </header>
+
+    <main id="main">
+      <slot />
+    </main>
+
+    <footer class="site-footer">
+      <div class="container">
+        <div class="site-footer__grid">
+          <div>
+            <div class="footer-brand">
+              <img src="/logo.svg" width="40" height="40" alt="" />
+              <strong>GKStreams Mirrors</strong>
+            </div>
+            <p class="footer-disclaimer">{SITE.footerDisclaimer}</p>
+          </div>
+
+          <div>
+            <h3>Navigate</h3>
+            <ul>
+              <li><a href="/#mirrors">Mirror list</a></li>
+              <li><a href="/#faq">FAQ</a></li>
+              <li><a href="/disclaimer/">Disclaimer &amp; DMCA</a></li>
+              <li><a href="/privacy/">Privacy policy</a></li>
+            </ul>
+          </div>
+
+          <div>
+            <h3>Contact</h3>
+            <ul>
+              <li><a href={`mailto:${SITE.email}`}>{SITE.email}</a></li>
+              <li><span style="color:var(--text-muted)">Status checked every 5 minutes</span></li>
+              <li>
+                <span class="updated-at" data-updated-at>{updated}</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="site-footer__bottom">
+          <span>© {new Date().getFullYear()} {SITE.name}. Directory page only — no content hosted.</span>
+          <span>Last status update: <span class="updated-at" data-updated-at>{updated}</span></span>
+        </div>
+      </div>
+    </footer>
+
+    <script is:inline type="application/json" id="status-data" set:html={JSON.stringify({
+      updatedAt: statusSnapshot?.updatedAt ?? null,
+      domains: statusSnapshot?.domains ?? [],
+    })} />
+
+    <script is:inline>
+      (function () {
+        var pill = document.querySelector("[data-live-pill]");
+        var label = document.querySelector("[data-live-label]");
+        var cards = document.querySelectorAll("[data-mirror-card]");
+
+        function applyStatus(data) {
+          if (!data || !Array.isArray(data.domains)) return;
+          var map = {};
+          data.domains.forEach(function (d) {
+            map[(d.url || "").replace(/\/+$/, "").toLowerCase()] = d;
+          });
+          var live = 0;
+          var total = cards.length;
+
+          cards.forEach(function (card) {
+            var url = (card.getAttribute("data-url") || "").replace(/\/+$/, "").toLowerCase();
+            var entry = map[url];
+            if (!entry) return;
+            var status = entry.status || "unknown";
+            if (status === "live") live++;
+
+            var badge = card.querySelector("[data-status-badge]");
+            var meta = card.querySelector("[data-status-meta]");
+            var btn = card.querySelector("[data-visit]");
+
+            if (badge) {
+              badge.className = "badge badge--" + status;
+              badge.innerHTML =
+                '<span class="badge__dot" aria-hidden="true"></span>' +
+                (status === "live" ? "Live" : status === "down" ? "Down" : "Unknown");
+            }
+            card.classList.remove("is-live", "is-down");
+            if (status === "live") card.classList.add("is-live");
+            if (status === "down") card.classList.add("is-down");
+            if (meta) {
+              var bits = [];
+              if (entry.ms != null) bits.push(entry.ms + " ms");
+              if (entry.httpStatus) bits.push("HTTP " + entry.httpStatus);
+              if (data.updatedAt) bits.push("checked " + data.updatedAt);
+              meta.textContent = bits.join(" · ");
+            }
+            if (btn) {
+              if (status === "down") btn.classList.add("is-disabled");
+              else btn.classList.remove("is-disabled");
+            }
+          });
+
+          if (pill && label) {
+            pill.classList.remove("is-live", "is-down", "is-degraded");
+            if (total > 0 && live === total) pill.classList.add("is-live");
+            else if (live === 0) pill.classList.add("is-down");
+            else pill.classList.add("is-degraded");
+            label.textContent = live + "/" + total + " mirrors live";
+          }
+
+          document.querySelectorAll("[data-updated-at]").forEach(function (el) {
+            if (data.updatedAt) el.textContent = data.updatedAt;
+          });
+
+          document.querySelectorAll("[data-live-count]").forEach(function (el) {
+            el.textContent = live + "/" + total;
+          });
+        }
+
+        // Try same-origin status.json for fresher data than page HTML
+        fetch("/status.json", { cache: "no-store" })
+          .then(function (r) {
+            if (!r.ok) throw new Error("bad status");
+            return r.json();
+          })
+          .then(applyStatus)
+          .catch(function () {
+            var el = document.getElementById("status-data");
+            if (el) {
+              try {
+                applyStatus(JSON.parse(el.textContent || "{}"));
+              } catch (e) {}
+            }
+          });
+      })();
+    </script>
+  </body>
+</html>

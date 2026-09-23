@@ -1,0 +1,5 @@
+[
+  { "url": "https://domain-a.example", "label": "Mirror A" },
+  { "url": "https://domain-b.example", "label": "Mirror B" },
+  { "url": "https://domain-c.example", "label": "Mirror C" }
+]
