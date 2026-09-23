@@ -2,8 +2,8 @@
 import Base from "../layouts/Base.astro";
 import MirrorCard from "../components/MirrorCard.astro";
 import SeoContent from "../components/SeoContent.astro";
-import { SITE, DOMAINS, formatCheckedAt, statusFor } from "../data/config";
-import { LEAGUES, COMPETITORS, FAQS, NAV_ITEMS } from "../data/seo";
+import { SITE, DOMAINS, formatCheckedAtTime, statusFor } from "../data/config";
+import { LEAGUES, COMPETITORS, FAQS } from "../data/seo";
 
 let snapshot: import("../data/config").StatusSnapshot | null = null;
 try {
@@ -13,7 +13,7 @@ try {
   snapshot = null;
 }
 
-const updated = formatCheckedAt(snapshot?.updatedAt);
+const updated = formatCheckedAtTime(snapshot?.updatedAt);
 
 const liveCards = DOMAINS.map((d) => {
   const s = statusFor(snapshot, d.url);
@@ -61,38 +61,20 @@ const itemListJsonLd = {
 ---
 
 <Base path="/" title={SITE.title} description={SITE.description}>
-  <nav class="section-nav" aria-label="Page sections">
-    <div class="section-nav__track">
-      {
-        NAV_ITEMS.map((item) => (
-          <a href={item.href}>{item.label}</a>
-        ))
-      }
-    </div>
-  </nav>
-
   <section class="intro">
     <div class="container">
       <h1>GKStreams Mirror Links &amp; Free Sports Stream Directory</h1>
-      <p class="lead-answer">
-        <strong>GKStreams</strong> is a free sports streaming link aggregator for
-        <strong>NFL</strong>, <strong>NBA</strong>, <strong>MLB</strong>,
-        <strong>NHL</strong>, <strong>UFC</strong>, and
-        <strong>soccer</strong>. GKStreams does not host or upload content — it
-        collects public game links for fans with no sign-up.
+      <p class="intro-meta">
+        <strong data-live-count>{liveCards.length}</strong> mirrors online
+        <span class="intro-meta__sep" aria-hidden="true">·</span>
+        <span class="updated-at" data-updated-at data-updated-prefix="Updated "
+          >Updated {updated}</span
+        >
       </p>
-      <p>
-        <strong data-live-count>{liveCards.length}</strong> mirrors online · checked every 5 minutes
-      </p>
-      <span class="updated-at" data-updated-at data-updated-prefix="Last updated: "
-        >Last updated: {updated}</span
-      >
     </div>
   </section>
 
   <div class="container" id="mirrors">
-    <div class="divider" aria-hidden="true"></div>
-
     <div class="mirror-list" data-mirror-grid hidden={liveCards.length === 0}>
       {
         liveCards.map((card) => (
@@ -110,8 +92,10 @@ const itemListJsonLd = {
 
     <div class="empty-state" data-empty-state hidden={liveCards.length > 0}>
       <h2>No mirrors online</h2>
-      <p>GKStreams re-checks every 5 minutes. Please try again shortly.</p>
-      <p class="updated-at" data-updated-at>{updated}</p>
+      <p>GKStreams re-checks shortly. Please try again soon.</p>
+      <p class="updated-at" data-updated-at data-updated-prefix="Updated "
+        >Updated {updated}</p
+      >
     </div>
   </div>
 

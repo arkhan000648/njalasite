@@ -78,3 +78,14 @@ export function formatCheckedAt(iso: string | undefined): string {
     hour12: true,
   });
 }
+
+export function formatCheckedAtTime(iso: string | undefined): string {
+  if (!iso) return "—";
+  const t = Date.parse(iso);
+  if (Number.isNaN(t) || t === 0) return "—";
+  return new Date(t).toLocaleString("en-US", {
+    hour: "numeric",
+    minute: "2-digit",
+    hour12: true,
+  });
+}
