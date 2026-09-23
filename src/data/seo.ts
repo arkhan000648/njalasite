@@ -34,7 +34,7 @@ export const LEAGUES: LeagueSection[] = [
   {
     id: "nfl",
     nav: "NFL",
-    h2: "GKStreams NFL — Watch Football Games Online",
+    h2: "NFL — Watch Football Games Online",
     answer:
       "GKStreams collects public NFL game links for the regular season, playoffs, and Super Bowl so fans can open a matchup without creating an account.",
     paragraphs: [
@@ -50,7 +50,7 @@ export const LEAGUES: LeagueSection[] = [
   {
     id: "nba",
     nav: "NBA",
-    h2: "GKStreams NBA — Basketball Links Without Sign-Up",
+    h2: "NBA — Basketball Links Without Sign-Up",
     answer:
       "Open NBA links on GKStreams for regular-season nights, the play-in, playoffs, and Finals — free, with no registration step.",
     paragraphs: [
@@ -66,7 +66,7 @@ export const LEAGUES: LeagueSection[] = [
   {
     id: "mlb",
     nav: "MLB",
-    h2: "GKStreams MLB — Baseball Game Link Directory",
+    h2: "MLB — Baseball Game Link Directory",
     answer:
       "Follow publicly listed MLB links on GKStreams through the long regular season and October. It never uploads game files itself.",
     paragraphs: [
@@ -82,7 +82,7 @@ export const LEAGUES: LeagueSection[] = [
   {
     id: "nhl",
     nav: "NHL",
-    h2: "GKStreams NHL — Hockey Streams Collected as Links",
+    h2: "NHL — Hockey Streams Collected as Links",
     answer:
       "Find NHL game links on GKStreams for the regular season and Stanley Cup playoffs — free, with no sign-up.",
     paragraphs: [
@@ -98,7 +98,7 @@ export const LEAGUES: LeagueSection[] = [
   {
     id: "ufc",
     nav: "UFC",
-    h2: "GKStreams UFC — MMA Fight Night Links",
+    h2: "UFC — MMA Fight Night Links",
     answer:
       "Browse public UFC and MMA fight-night links on GKStreams so you can follow cards without any video hosted here.",
     paragraphs: [
@@ -114,7 +114,7 @@ export const LEAGUES: LeagueSection[] = [
   {
     id: "soccer",
     nav: "Soccer",
-    h2: "GKStreams Soccer — Premier League, Champions League & More",
+    h2: "Soccer — Premier League, Champions League & More",
     answer:
       "GKStreams soccer links cover the Premier League, Champions League, top European leagues, and international windows — free, without sign-up.",
     paragraphs: [
