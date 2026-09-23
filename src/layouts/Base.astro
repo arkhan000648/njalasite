@@ -25,11 +25,7 @@ try {
   statusSnapshot = null;
 }
 
-const liveDomains = (statusSnapshot?.domains ?? []).filter((d) => d.status === "live");
-const liveCount = liveDomains.length;
 const updated = formatCheckedAt(statusSnapshot?.updatedAt);
-const hasChecked =
-  !!statusSnapshot?.updatedAt && statusSnapshot.updatedAt !== new Date(0).toISOString();
 
 const websiteJsonLd = {
   "@context": "https://schema.org",
@@ -73,14 +69,7 @@ const websiteJsonLd = {
 
     <header class="topbar">
       <div class="container topbar__inner">
-        <a class="brand" href="/">
-          <img src="/logo.svg" width="28" height="28" alt="" />
-          <div>GK<span>Streams</span></div>
-        </a>
-        <div class:list={["status-pill", liveCount > 0 && "is-live"]} data-live-pill>
-          <span class="status-pill__dot" aria-hidden="true"></span>
-          <span data-live-label>{hasChecked && liveCount > 0 ? `${liveCount} online` : "checking…"}</span>
-        </div>
+        <a class="brand" href="/">GK<span>Streams</span></a>
       </div>
     </header>
 
@@ -92,8 +81,9 @@ const websiteJsonLd = {
       <div class="container">
         <p>
           This website only lists publicly available GKStreams mirror links. We do not
-          host, store, or stream any content. Links go to third-party sites we do not
-          control. For removal requests: <a href={`mailto:${SITE.email}`}>{SITE.email}</a>
+          host, store, or stream any content. Links lead to third-party sites we do not
+          control. For copyright or content removal, please contact the actual host or
+          operator of the linked site.
         </p>
         <p class="site-footer__copy">
           © {new Date().getFullYear()} {SITE.name} — directory only. ·
@@ -111,11 +101,27 @@ const websiteJsonLd = {
 
     <script is:inline>
       (function () {
-        var pill = document.querySelector("[data-live-pill]");
-        var label = document.querySelector("[data-live-label]");
         var grid = document.querySelector("[data-mirror-grid]");
         var empty = document.querySelector("[data-empty-state]");
         var introCount = document.querySelectorAll("[data-live-count]");
+
+        function formatTime(iso) {
+          if (!iso) return "";
+          var t = Date.parse(iso);
+          if (Number.isNaN(t) || t === 0) return "";
+          try {
+            return new Date(t).toLocaleString("en-US", {
+              month: "short",
+              day: "numeric",
+              year: "numeric",
+              hour: "numeric",
+              minute: "2-digit",
+              hour12: true,
+            });
+          } catch (e) {
+            return new Date(t).toUTCString();
+          }
+        }
 
         function applyStatus(data) {
           if (!data || !Array.isArray(data.domains)) return;
@@ -126,6 +132,7 @@ const websiteJsonLd = {
           });
 
           var live = 0;
+          var checkedLabel = formatTime(data.updatedAt);
           var cards = grid ? grid.querySelectorAll("[data-mirror-card]") : [];
 
           cards.forEach(function (card) {
@@ -143,7 +150,7 @@ const websiteJsonLd = {
               if (meta) {
                 var bits = [];
                 if (entry.ms != null) bits.push(entry.ms + " ms");
-                if (data.updatedAt) bits.push("checked " + data.updatedAt);
+                if (checkedLabel) bits.push("checked " + checkedLabel);
                 meta.textContent = bits.join(" · ");
               }
             } else {
@@ -184,7 +191,7 @@ const websiteJsonLd = {
               a.querySelector(".mirror-card__host").textContent = host;
               var bits = [];
               if (entry.ms != null) bits.push(entry.ms + " ms");
-              if (data.updatedAt) bits.push("checked " + data.updatedAt);
+              if (checkedLabel) bits.push("checked " + checkedLabel);
               a.querySelector("[data-status-meta]").textContent = bits.join(" · ");
               live++;
               grid.appendChild(a);
@@ -194,19 +201,14 @@ const websiteJsonLd = {
           if (empty) empty.hidden = live > 0;
           if (grid) grid.hidden = live === 0;
 
-          if (pill && label) {
-            pill.classList.toggle("is-live", live > 0);
-            label.textContent = live > 0 ? live + " online" : "checking…";
-          }
-
           introCount.forEach(function (el) {
             el.textContent = String(live);
           });
 
           document.querySelectorAll("[data-updated-at]").forEach(function (el) {
-            if (data.updatedAt) {
+            if (checkedLabel) {
               el.textContent =
-                (el.getAttribute("data-updated-prefix") || "") + data.updatedAt;
+                (el.getAttribute("data-updated-prefix") || "") + checkedLabel;
             }
           });
         }

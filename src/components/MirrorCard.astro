@@ -22,7 +22,18 @@ const metaParts: string[] = [];
 if (ms != null) metaParts.push(`${ms} ms`);
 if (httpStatus) metaParts.push(`HTTP ${httpStatus}`);
 if (checkedAt && checkedAt !== new Date(0).toISOString()) {
-  metaParts.push(`checked ${checkedAt}`);
+  const t = Date.parse(checkedAt);
+  if (!Number.isNaN(t) && t !== 0) {
+    const readable = new Date(t).toLocaleString("en-US", {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+      hour: "numeric",
+      minute: "2-digit",
+      hour12: true,
+    });
+    metaParts.push(`checked ${readable}`);
+  }
 }
 const meta = metaParts.join(" · ") || "Verified online";
 ---

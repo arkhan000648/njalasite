@@ -6,9 +6,8 @@ export const SITE = {
   description:
     "Official GKStreams mirror list. Live working domains only — checked every 5 minutes. No content hosted here.",
   url: "https://gkstreams.com",
-  email: "dmca@gkstreams.com",
   footerDisclaimer:
-    "This website only lists publicly available GKStreams mirror links. We do not host, store, or stream any content. For removal requests, contact us.",
+    "This website only lists publicly available GKStreams mirror links. We do not host, store, or stream any content. Links lead to third-party sites we do not control. For copyright or content removal, please contact the actual host or operator of the linked site.",
 } as const;
 
 export interface MirrorDomain {
@@ -71,13 +70,11 @@ export function formatCheckedAt(iso: string | undefined): string {
   const t = Date.parse(iso);
   if (Number.isNaN(t) || t === 0) return "Awaiting first check";
   return new Date(t).toLocaleString("en-US", {
-    timeZone: "UTC",
     month: "short",
     day: "numeric",
     year: "numeric",
-    hour: "2-digit",
+    hour: "numeric",
     minute: "2-digit",
-    hour12: false,
-    timeZoneName: "short",
+    hour12: true,
   });
 }
