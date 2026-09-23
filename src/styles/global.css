@@ -72,19 +72,86 @@ img {
 
 .topbar__inner {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0.7rem 0;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.65rem;
+  padding: 0.75rem 0 0.5rem;
 }
 
 .brand {
   font-weight: 800;
   font-size: 1.05rem;
   letter-spacing: -0.02em;
+  text-align: center;
 }
 
 .brand span {
   color: var(--accent);
+}
+
+.site-nav {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 0.15rem;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  border-top: 1px solid var(--border);
+  padding-top: 0.55rem;
+}
+
+.site-nav::-webkit-scrollbar {
+  display: none;
+}
+
+.site-nav a {
+  flex: 0 0 auto;
+  padding: 0.35rem 0.55rem;
+  border-radius: 6px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.site-nav a:hover,
+.site-nav a:focus-visible {
+  color: var(--text);
+  background: rgba(225, 6, 0, 0.12);
+}
+
+.section-nav {
+  border-bottom: 1px solid var(--border);
+  background: #0c0c0c;
+}
+
+.section-nav__track {
+  width: min(720px, calc(100% - 2rem));
+  margin-inline: auto;
+  display: flex;
+  gap: 0.25rem;
+  overflow-x: auto;
+  padding: 0.45rem 0;
+  scrollbar-width: none;
+}
+
+.section-nav__track::-webkit-scrollbar {
+  display: none;
+}
+
+.section-nav a {
+  flex: 0 0 auto;
+  padding: 0.3rem 0.55rem;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  border: 1px solid transparent;
+}
+
+.section-nav a:hover {
+  color: var(--text);
+  border-color: rgba(225, 6, 0, 0.45);
 }
 
 /* Intro (compact) */
@@ -104,6 +171,18 @@ img {
   margin: 0.35rem 0 0;
   font-size: 0.875rem;
   color: var(--text-muted);
+}
+
+.intro .lead-answer {
+  margin: 0.75rem auto 0;
+  max-width: 52ch;
+  color: var(--text);
+  font-size: 0.95rem;
+  line-height: 1.55;
+}
+
+.intro .lead-answer strong {
+  color: #fff;
 }
 
 .intro .updated-at {
@@ -255,6 +334,163 @@ img {
 
 .updated-at {
   font-family: var(--mono);
+}
+
+/* SEO article */
+.article-wrap {
+  width: min(720px, calc(100% - 2rem));
+}
+
+.seo-article {
+  padding-bottom: 1rem;
+}
+
+.seo-article .prose {
+  padding-top: 1.75rem;
+}
+
+.seo-article h2 {
+  margin: 0 0 0.65rem;
+  font-size: clamp(1.1rem, 3vw, 1.3rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.25;
+  scroll-margin-top: 4.5rem;
+}
+
+.seo-article h3 {
+  margin: 1.15rem 0 0.4rem;
+  font-size: 1rem;
+  font-weight: 750;
+  scroll-margin-top: 4.5rem;
+}
+
+.seo-article p {
+  margin: 0 0 0.75rem;
+  font-size: 0.92rem;
+  line-height: 1.65;
+  color: var(--text-muted);
+}
+
+.seo-article p.answer {
+  color: var(--text);
+  font-size: 0.95rem;
+  padding: 0.75rem 0.9rem;
+  border-left: 3px solid var(--accent);
+  background: rgba(225, 6, 0, 0.06);
+  border-radius: 0 var(--radius) var(--radius) 0;
+}
+
+.seo-article ul {
+  margin: 0 0 0.85rem;
+  padding-left: 1.15rem;
+}
+
+.seo-article li {
+  margin: 0.3rem 0;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+.seo-article a {
+  color: #fca5a5;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.seo-article a:hover {
+  color: #fff;
+}
+
+.competitor {
+  padding: 0.35rem 0 0.15rem;
+  border-top: 1px dashed var(--border);
+  margin-top: 0.35rem;
+}
+
+.competitor:first-of-type {
+  border-top: none;
+}
+
+.sport-grid {
+  list-style: none;
+  padding: 0 !important;
+  display: grid;
+  gap: 0.5rem;
+}
+
+.sport-grid li {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  padding: 0.65rem 0.75rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  margin: 0 !important;
+  color: var(--text);
+}
+
+.sport-grid span {
+  font-size: 0.82rem;
+  color: var(--text-dim);
+}
+
+.faq-item {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg-card);
+  margin-bottom: 0.5rem;
+  overflow: hidden;
+}
+
+.faq-item summary {
+  cursor: pointer;
+  padding: 0.75rem 0.9rem;
+  font-weight: 700;
+  font-size: 0.9rem;
+  list-style: none;
+}
+
+.faq-item summary::-webkit-details-marker {
+  display: none;
+}
+
+.faq-item summary::after {
+  content: "+";
+  float: right;
+  color: var(--accent);
+  font-weight: 800;
+}
+
+.faq-item[open] summary::after {
+  content: "−";
+}
+
+.faq-item p {
+  margin: 0;
+  padding: 0 0.9rem 0.85rem;
+}
+
+.disclaimer-block p {
+  font-size: 0.82rem !important;
+  color: var(--text-dim) !important;
+}
+
+#mirrors,
+#about,
+#nfl,
+#nba,
+#mlb,
+#nhl,
+#ufc,
+#soccer,
+#more-sports,
+#alternatives,
+#faq,
+#disclaimer {
+  scroll-margin-top: 3.5rem;
 }
 
 @keyframes pulse {

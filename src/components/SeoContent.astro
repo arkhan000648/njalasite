@@ -1,0 +1,144 @@
+---
+import type { LeagueSection, CompetitorSection, FaqItem } from "../data/seo";
+import { LEAGUES, MORE_SPORTS, COMPETITORS, FAQS } from "../data/seo";
+
+interface Props {
+  mirrorCount: number;
+}
+
+const { mirrorCount } = Astro.props;
+const leagues: LeagueSection[] = LEAGUES;
+const competitors: CompetitorSection[] = COMPETITORS;
+const faqs: FaqItem[] = FAQS;
+---
+
+<article class="seo-article">
+  <section class="prose" aria-label="About GKStreams">
+    <h2 id="about">What Is GKStreams?</h2>
+    <p class="answer">
+      GKStreams is a free sports streaming <strong>link aggregator</strong> that
+      collects public game links across major leagues. It does not host or upload
+      content; fans open the collected links without sign-up.
+    </p>
+    <p>
+      In practice, GKStreams works like a directory: openly available URLs are
+      gathered, grouped by sport, and sent onward to the third party that already
+      publishes each feed. Because nothing is stored on this site, the product
+      stays simple — a mirror list plus league sections so people can find
+      football, basketball, baseball, hockey, fight-night, and soccer links in
+      one place.
+    </p>
+    <p>
+      Search interest around the name usually means fans want current access when
+      a primary domain moves. That is why working mirrors sit near the top of this
+      page and are checked on a short cycle. The directory does not claim
+      ownership of leagues, teams, or broadcasters; it only points toward links
+      already on the open web for its audience.
+    </p>
+    <p>
+      {mirrorCount > 0
+        ? `${mirrorCount} mirror${mirrorCount === 1 ? " is" : "s are"} currently marked online in the list above.`
+        : "If no mirrors are listed above, wait for the next status check or try again shortly."}
+    </p>
+  </section>
+
+  {
+    leagues.map((league) => (
+      <section class="prose" id={league.id} aria-labelledby={`${league.id}-heading`}>
+        <h2 id={`${league.id}-heading`}>{league.h2}</h2>
+        <p class="answer">{league.answer}</p>
+        {league.paragraphs.map((p) => (
+          <p>{p}</p>
+        ))}
+        {league.bullets?.length ? (
+          <ul>
+            {league.bullets.map((item) => (
+              <li>{item}</li>
+            ))}
+          </ul>
+        ) : null}
+        <p>
+          <a href="#mirrors">Open current mirrors</a> before game time.
+        </p>
+      </section>
+    ))
+  }
+
+  <section class="prose" id="more-sports" aria-labelledby="more-sports-heading">
+    <h2 id="more-sports-heading">More Sports on This Directory</h2>
+    <p class="answer">
+      Beyond the core US leagues, the list also surfaces links for additional
+      popular sports when those events are active.
+    </p>
+    <ul class="sport-grid">
+      {
+        MORE_SPORTS.map((s) => (
+          <li>
+            <strong>{s.name}</strong>
+            <span>{s.note}</span>
+          </li>
+        ))
+      }
+    </ul>
+    <p>
+      Each category follows the same rule: links are collected for the audience
+      and streams are not uploaded here. Check the
+      <a href="#mirrors">mirror list</a> for live access.
+    </p>
+  </section>
+
+  <section
+    class="prose"
+    id="alternatives"
+    aria-labelledby="alternatives-heading"
+  >
+    <h2 id="alternatives-heading">
+      Similar Sports Link Sites &amp; GKStreams Alternatives
+    </h2>
+    <p class="answer">
+      People searching for free sports links often compare this directory with
+      other well-known brand names. The section is informational only.
+    </p>
+    <p>
+      The names below appear in the same search space. Mentions help readers and
+      search engines connect related entities; they are not endorsements, and
+      this page does not host any third-party video.
+    </p>
+    {
+      competitors.map((c) => (
+        <section class="competitor" id={c.id}>
+          <h3>{c.name}</h3>
+          <p>{c.body}</p>
+        </section>
+      ))
+    }
+    <p>
+      For current access, return to the
+      <a href="#mirrors">live mirror list</a>.
+    </p>
+  </section>
+
+  <section class="prose" id="faq" aria-labelledby="faq-heading">
+    <h2 id="faq-heading">GKStreams FAQ</h2>
+    {
+      faqs.map((item) => (
+        <details class="faq-item">
+          <summary>{item.q}</summary>
+          <p>{item.a}</p>
+        </details>
+      ))
+    }
+  </section>
+
+  <section class="prose disclaimer-block" id="disclaimer" aria-labelledby="disclaimer-heading">
+    <h2 id="disclaimer-heading">Disclaimer</h2>
+    <p>
+      This page is an informational directory of publicly available GKStreams
+      mirror links and related sports-link research. We do not host, store, or
+      stream any content and we are not claiming to own GKStreams, the NFL, NBA,
+      MLB, NHL, UFC, or any other league or brand named here. Links go to
+      third-party sites we do not control. For copyright or content removal,
+      contact the actual host or operator of the linked site.
+    </p>
+  </section>
+</article>

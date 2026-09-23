@@ -1,7 +1,9 @@
 ---
 import Base from "../layouts/Base.astro";
 import MirrorCard from "../components/MirrorCard.astro";
+import SeoContent from "../components/SeoContent.astro";
 import { SITE, DOMAINS, formatCheckedAt, statusFor } from "../data/config";
+import { LEAGUES, COMPETITORS, FAQS, NAV_ITEMS } from "../data/seo";
 
 let snapshot: import("../data/config").StatusSnapshot | null = null;
 try {
@@ -23,12 +25,62 @@ const liveCards = DOMAINS.map((d) => {
     checkedAt: snapshot?.updatedAt,
   };
 }).filter((c) => c.status === "live");
+
+const faqJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: FAQS.map((item) => ({
+    "@type": "Question",
+    name: item.q,
+    acceptedAnswer: {
+      "@type": "Answer",
+      text: item.a,
+    },
+  })),
+};
+
+const itemListJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  name: "GKStreams sports link topics",
+  itemListElement: [
+    ...LEAGUES.map((l, i) => ({
+      "@type": "ListItem",
+      position: i + 1,
+      name: l.h2,
+      url: `${SITE.url}/#${l.id}`,
+    })),
+    ...COMPETITORS.map((c, i) => ({
+      "@type": "ListItem",
+      position: LEAGUES.length + i + 1,
+      name: `${c.name} and GKStreams`,
+      url: `${SITE.url}/#${c.id}`,
+    })),
+  ],
+};
 ---
 
 <Base path="/" title={SITE.title} description={SITE.description}>
+  <nav class="section-nav" aria-label="Page sections">
+    <div class="section-nav__track">
+      {
+        NAV_ITEMS.map((item) => (
+          <a href={item.href}>{item.label}</a>
+        ))
+      }
+    </div>
+  </nav>
+
   <section class="intro">
     <div class="container">
-      <h1>GKStreams Official Mirror List</h1>
+      <h1>GKStreams Mirror Links &amp; Free Sports Stream Directory</h1>
+      <p class="lead-answer">
+        <strong>GKStreams</strong> is a free sports streaming link aggregator for
+        <strong>NFL</strong>, <strong>NBA</strong>, <strong>MLB</strong>,
+        <strong>NHL</strong>, <strong>UFC</strong>, and
+        <strong>soccer</strong>. It does not host or upload content — it collects
+        public game links for fans with no sign-up.
+      </p>
       <p>
         <strong data-live-count>{liveCards.length}</strong> mirrors online · checked every 5 minutes
       </p>
@@ -38,20 +90,22 @@ const liveCards = DOMAINS.map((d) => {
     </div>
   </section>
 
-  <div class="container">
+  <div class="container" id="mirrors">
     <div class="divider" aria-hidden="true"></div>
 
     <div class="mirror-list" data-mirror-grid hidden={liveCards.length === 0}>
-      {liveCards.map((card) => (
-        <MirrorCard
-          url={card.url}
-          label={card.label}
-          status={card.status}
-          httpStatus={card.httpStatus}
-          ms={card.ms}
-          checkedAt={card.checkedAt}
-        />
-      ))}
+      {
+        liveCards.map((card) => (
+          <MirrorCard
+            url={card.url}
+            label={card.label}
+            status={card.status}
+            httpStatus={card.httpStatus}
+            ms={card.ms}
+            checkedAt={card.checkedAt}
+          />
+        ))
+      }
     </div>
 
     <div class="empty-state" data-empty-state hidden={liveCards.length > 0}>
@@ -60,4 +114,11 @@ const liveCards = DOMAINS.map((d) => {
       <p class="updated-at" data-updated-at>{updated}</p>
     </div>
   </div>
+
+  <div class="container article-wrap">
+    <SeoContent mirrorCount={liveCards.length} />
+  </div>
+
+  <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />
+  <script type="application/ld+json" set:html={JSON.stringify(itemListJsonLd)} />
 </Base>
