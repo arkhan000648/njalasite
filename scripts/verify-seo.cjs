@@ -15,6 +15,10 @@ const checks = [
   ["sw register", html.includes("serviceWorker")],
   ["no SearchAction", !html.includes("SearchAction")],
   ["@graph", html.includes("@graph")],
+  ["no google.com mirror", !html.includes("google.com")],
+  ["no heavy favicon.svg link", !html.includes('href="/icons/favicon.svg"')],
+  ["app scroll id", html.includes('id="app"')],
+  ["hero 15 min", html.includes("Links checked every 15 minutes")],
 ];
 for (const [k, v] of checks) console.log((v ? "OK" : "FAIL") + ": " + k);
 

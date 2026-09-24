@@ -8,7 +8,6 @@ const PRECACHE = [
   "/icons/maskable-192.png",
   "/icons/maskable-512.png",
   "/icons/apple-touch-icon.png",
-  "/icons/favicon.svg",
   "/favicon.ico",
 ];
 
