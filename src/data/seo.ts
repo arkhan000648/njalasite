@@ -18,7 +18,8 @@ export interface FaqItem {
   a: string;
 }
 
-export const NAV_ITEMS: { href: string; label: string }[] = [
+export const NAV_ITEMS: { href: string; label: string; icon?: "download" }[] = [
+  { href: "#app", label: "App Download", icon: "download" },
   { href: "#mirrors", label: "Mirrors" },
   { href: "#nfl", label: "NFL" },
   { href: "#nba", label: "NBA" },

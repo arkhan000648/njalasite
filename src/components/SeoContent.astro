@@ -41,6 +41,44 @@ const faqs: FaqItem[] = FAQS;
     </p>
   </section>
 
+  <section class="prose app-section" id="app" aria-labelledby="app-heading">
+    <h2 id="app-heading">GKStreams Android App</h2>
+    <p class="answer">
+      GKStreams provides an official Android app so it can open the current
+      working site without manual mirror checks.
+    </p>
+    <p>
+      The app is built for Android and keeps the connection simple: fans launch
+      it to reach the live GKStreams domain and continue browsing with less
+      interruption when a primary address changes. Download it below for a
+      direct path on a phone or tablet.
+    </p>
+    <a
+      class="app-dl-btn"
+      href="https://tinyurl.com/gkstreams"
+      target="_blank"
+      rel="nofollow noopener noreferrer"
+    >
+      <svg
+        width="18"
+        height="18"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2.25"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"
+      >
+        <path d="M12 3v12" />
+        <path d="m7 12 5 5 5-5" />
+        <path d="M5 21h14" />
+      </svg>
+      Download for Android
+    </a>
+    <p class="app-section__note">Android application · Official GKStreams download</p>
+  </section>
+
   {
     leagues.map((league) => (
       <section class="prose" id={league.id} aria-labelledby={`${league.id}-heading`}>
