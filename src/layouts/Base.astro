@@ -149,7 +149,8 @@ const webpageJsonLd = {
 
         var grid = document.querySelector("[data-mirror-grid]");
         var empty = document.querySelector("[data-empty-state]");
-        var introCount = document.querySelectorAll("[data-live-count]");
+        var primary = document.querySelector("[data-primary-mirror]");
+        var backup = document.querySelector("[data-backup]");
 
         function formatTime(iso) {
           if (!iso) return "";
@@ -175,6 +176,7 @@ const webpageJsonLd = {
           });
 
           var live = 0;
+          var firstLive = null;
           var checkedLabel = formatTime(data.updatedAt);
           var cards = grid ? grid.querySelectorAll("[data-mirror-card]") : [];
 
@@ -183,18 +185,12 @@ const webpageJsonLd = {
             var entry = map[url];
             if (entry) {
               live++;
+              if (!firstLive) firstLive = entry.url;
               card.hidden = false;
               var badge = card.querySelector("[data-status-badge]");
               if (badge) {
                 badge.className = "badge badge--live";
                 badge.innerHTML = '<span class="badge__dot" aria-hidden="true"></span>Online';
-              }
-              var meta = card.querySelector("[data-status-meta]");
-              if (meta) {
-                var bits = [];
-                if (entry.ms != null) bits.push(entry.ms + " ms");
-                if (checkedLabel) bits.push("checked " + checkedLabel);
-                meta.textContent = bits.join(" · ");
               }
             } else {
               card.hidden = true;
@@ -227,26 +223,48 @@ const webpageJsonLd = {
               a.setAttribute("data-mirror-card", "");
               a.setAttribute("data-url", entry.url);
               a.innerHTML =
-                '<div><p class="mirror-card__host"></p>' +
-                '<span class="mirror-card__meta" data-status-meta></span></div>' +
+                '<p class="mirror-card__host"></p>' +
                 '<span class="badge badge--live" data-status-badge>' +
                 '<span class="badge__dot"></span>Online</span>';
               a.querySelector(".mirror-card__host").textContent = host;
-              var bits = [];
-              if (entry.ms != null) bits.push(entry.ms + " ms");
-              if (checkedLabel) bits.push("checked " + checkedLabel);
-              a.querySelector("[data-status-meta]").textContent = bits.join(" · ");
               live++;
+              if (!firstLive) firstLive = entry.url;
               grid.appendChild(a);
             });
           }
 
-          if (empty) empty.hidden = live > 0;
-          if (grid) grid.hidden = live === 0;
+          if (primary) {
+            if (firstLive) {
+              primary.href = firstLive;
+              primary.hidden = false;
+            } else {
+              primary.removeAttribute("href");
+              primary.hidden = true;
+            }
+          }
 
-          introCount.forEach(function (el) {
-            el.textContent = String(live);
-          });
+          var visibleCards = grid
+            ? Array.prototype.filter.call(
+                grid.querySelectorAll("[data-mirror-card]"),
+                function (el) {
+                  return !el.hidden;
+                }
+              )
+            : [];
+
+          var primaryKey = firstLive
+            ? firstLive.replace(/\/+$/, "").toLowerCase()
+            : "";
+          var backupCount = visibleCards.filter(function (el) {
+            var key = (el.getAttribute("data-url") || "")
+              .replace(/\/+$/, "")
+              .toLowerCase();
+            return key !== primaryKey;
+          }).length;
+
+          if (backup) backup.hidden = backupCount < 1;
+          if (empty) empty.hidden = live > 0;
+          if (grid) grid.hidden = visibleCards.length === 0;
 
           document.querySelectorAll("[data-updated-at]").forEach(function (el) {
             if (checkedLabel) {

@@ -143,59 +143,107 @@ img {
   background: rgba(225, 6, 0, 0.12);
 }
 
-/* Intro */
-.intro {
-  padding: 1.75rem 0 0.85rem;
+/* Hero */
+.hero {
+  width: min(var(--mirrors), calc(100% - 2rem));
+  margin-inline: auto;
+  padding: 1.75rem 0 1rem;
+}
+
+.hero__head {
   text-align: center;
 }
 
-.intro__wrap {
-  width: min(var(--mirrors), calc(100% - 2rem));
-  margin-inline: auto;
-}
-
-.intro__logo {
-  width: 72px;
-  height: 72px;
-  margin: 0 auto 0.85rem;
-  border-radius: 16px;
-  box-shadow: 0 0 28px rgba(225, 6, 0, 0.28);
-}
-
-.intro h1 {
+.hero h1 {
   margin: 0;
   font-size: clamp(1.2rem, 4vw, 1.55rem);
   font-weight: 800;
   letter-spacing: -0.03em;
 }
 
-.intro-meta {
+.hero-meta {
   margin: 0.45rem 0 0;
   font-size: 0.9rem;
   color: var(--text-muted);
 }
 
-.intro-meta strong {
-  color: var(--text);
-}
-
-.intro-meta__sep {
+.hero-meta__sep {
   margin-inline: 0.4rem;
   color: var(--text-dim);
 }
 
-.intro .updated-at {
+.hero .updated-at {
   font-family: var(--mono);
   font-size: 0.82rem;
   color: var(--text-dim);
 }
 
-/* Mirror list */
-.mirrors-wrap {
-  width: min(var(--mirrors), calc(100% - 2rem));
-  margin-inline: auto;
+.hero__actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 1.35rem;
 }
 
+.hero__logo {
+  width: 80px;
+  height: 80px;
+  flex-shrink: 0;
+  border-radius: 16px;
+  box-shadow: 0 0 28px rgba(225, 6, 0, 0.28);
+}
+
+.hero-cta {
+  flex: 1;
+  max-width: 360px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem 1.5rem;
+  border-radius: var(--radius);
+  background: var(--accent);
+  color: #fff;
+  font-size: 1.05rem;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  box-shadow: 0 0 24px rgba(225, 6, 0, 0.3);
+  transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
+}
+
+.hero-cta:hover,
+.hero-cta:focus-visible {
+  transform: translateY(-1px);
+  filter: brightness(1.06);
+  box-shadow: 0 0 32px rgba(225, 6, 0, 0.45);
+}
+
+.hero-cta:active {
+  transform: translateY(0);
+}
+
+.hero-cta[hidden] {
+  display: none;
+}
+
+/* Backup mirrors */
+.backup {
+  margin-top: 0.25rem;
+}
+
+.backup[hidden] {
+  display: none;
+}
+
+.backup__title {
+  margin: 1.5rem 0 0.75rem;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  letter-spacing: 0.01em;
+}
+
+/* Mirror list */
 .mirror-list {
   display: grid;
   gap: 0.65rem;
@@ -230,14 +278,6 @@ img {
   font-weight: 800;
   letter-spacing: -0.02em;
   word-break: break-all;
-}
-
-.mirror-card__meta {
-  display: block;
-  margin-top: 0.2rem;
-  font-size: 0.75rem;
-  color: var(--text-dim);
-  font-family: var(--mono);
 }
 
 .badge {

@@ -3,12 +3,9 @@ interface Props {
   url: string;
   label: string;
   status: "live" | "down" | "unknown";
-  httpStatus?: number;
-  ms?: number;
-  checkedAt?: string;
 }
 
-const { url, status, ms, httpStatus, checkedAt } = Astro.props;
+const { url, status } = Astro.props;
 
 const host = (() => {
   try {
@@ -17,25 +14,6 @@ const host = (() => {
     return url;
   }
 })();
-
-const metaParts: string[] = [];
-if (ms != null) metaParts.push(`${ms} ms`);
-if (httpStatus) metaParts.push(`HTTP ${httpStatus}`);
-if (checkedAt && checkedAt !== new Date(0).toISOString()) {
-  const t = Date.parse(checkedAt);
-  if (!Number.isNaN(t) && t !== 0) {
-    const readable = new Date(t).toLocaleString("en-US", {
-      month: "short",
-      day: "numeric",
-      year: "numeric",
-      hour: "numeric",
-      minute: "2-digit",
-      hour12: true,
-    });
-    metaParts.push(`checked ${readable}`);
-  }
-}
-const meta = metaParts.join(" · ") || "Verified online";
 ---
 
 <a
@@ -47,10 +25,7 @@ const meta = metaParts.join(" · ") || "Verified online";
   rel="noopener noreferrer"
   hidden={status !== "live"}
 >
-  <div>
-    <p class="mirror-card__host">{host}</p>
-    <span class="mirror-card__meta" data-status-meta>{meta}</span>
-  </div>
+  <p class="mirror-card__host">{host}</p>
   <span class="badge badge--live" data-status-badge role="status" aria-label="Status: Online">
     <span class="badge__dot" aria-hidden="true"></span>
     Online

@@ -26,6 +26,9 @@ const liveCards = DOMAINS.map((d) => {
   };
 }).filter((c) => c.status === "live");
 
+const primary = liveCards[0] ?? null;
+const backups = liveCards.slice(1);
+
 const faqJsonLd = {
   "@context": "https://schema.org",
   "@type": "FAQPage",
@@ -61,40 +64,51 @@ const itemListJsonLd = {
 ---
 
 <Base path="/" title={SITE.title} description={SITE.description}>
-  <section class="intro">
-    <div class="intro__wrap">
-      <img
-        class="intro__logo"
-        src="/icons/favicon.svg"
-        width="72"
-        height="72"
-        alt="GKStreams"
-      />
+  <section class="hero">
+    <div class="hero__head">
       <h1>GKStreams: The best free site for sports lover</h1>
-      <p class="intro-meta">
-        <strong data-live-count>{liveCards.length}</strong> mirrors online
-        <span class="intro-meta__sep" aria-hidden="true">·</span>
+      <p class="hero-meta">
+        All links online
+        <span class="hero-meta__sep" aria-hidden="true">·</span>
         <span class="updated-at" data-updated-at data-updated-prefix="Updated "
           >Updated {updated}</span
         >
       </p>
     </div>
-  </section>
 
-  <div class="mirrors-wrap" id="mirrors">
-    <div class="mirror-list" data-mirror-grid hidden={liveCards.length === 0}>
-      {
-        liveCards.map((card) => (
-          <MirrorCard
-            url={card.url}
-            label={card.label}
-            status={card.status}
-            httpStatus={card.httpStatus}
-            ms={card.ms}
-            checkedAt={card.checkedAt}
-          />
-        ))
-      }
+    <div class="hero__actions">
+      <img
+        class="hero__logo"
+        src="/icons/favicon.svg"
+        width="80"
+        height="80"
+        alt=""
+      />
+      <a
+        class="hero-cta"
+        data-primary-mirror
+        href={primary?.url}
+        target="_blank"
+        rel="noopener noreferrer"
+        hidden={!primary}
+      >
+        Visit Full Site
+      </a>
+    </div>
+
+    <div class="backup" id="mirrors" data-backup hidden={backups.length === 0}>
+      <h2 class="backup__title">Available backup mirrors</h2>
+      <div class="mirror-list" data-mirror-grid>
+        {
+          backups.map((card) => (
+            <MirrorCard
+              url={card.url}
+              label={card.label}
+              status={card.status}
+            />
+          ))
+        }
+      </div>
     </div>
 
     <div class="empty-state" data-empty-state hidden={liveCards.length > 0}>
@@ -104,7 +118,7 @@ const itemListJsonLd = {
         >Updated {updated}</p
       >
     </div>
-  </div>
+  </section>
 
   <div class="container article-wrap">
     <SeoContent mirrorCount={liveCards.length} />
