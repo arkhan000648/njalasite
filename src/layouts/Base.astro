@@ -16,7 +16,7 @@ const {
 } = Astro.props;
 
 const canonical = new URL(path, SITE.url).toString();
-const ogImage = new URL("/icons/web-app-manifest-512x512.png", SITE.url).toString();
+const logoUrl = new URL("/icons/logo-512.png", SITE.url).toString();
 
 let statusSnapshot: import("../data/config").StatusSnapshot | null = null;
 try {
@@ -28,25 +28,43 @@ try {
 
 const updated = formatCheckedAtTime(statusSnapshot?.updatedAt);
 
-const websiteJsonLd = {
+const schemaGraph = {
   "@context": "https://schema.org",
-  "@type": "WebSite",
-  "@id": `${SITE.url}/#website`,
-  name: SITE.name,
-  url: SITE.url,
-  description: SITE.description,
-  inLanguage: "en",
-};
-
-const webpageJsonLd = {
-  "@context": "https://schema.org",
-  "@type": "WebPage",
-  "@id": `${SITE.url}/#webpage`,
-  url: canonical,
-  name: title,
-  description,
-  isPartOf: { "@id": `${SITE.url}/#website` },
-  inLanguage: "en",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": `${SITE.url}/#organization`,
+      name: SITE.name,
+      url: SITE.url,
+      logo: {
+        "@type": "ImageObject",
+        "@id": `${SITE.url}/#logo`,
+        url: logoUrl,
+        width: 512,
+        height: 512,
+        caption: SITE.name,
+      },
+    },
+    {
+      "@type": "WebSite",
+      "@id": `${SITE.url}/#website`,
+      name: SITE.name,
+      url: SITE.url,
+      description: SITE.description,
+      publisher: { "@id": `${SITE.url}/#organization` },
+      inLanguage: "en",
+    },
+    {
+      "@type": "WebPage",
+      "@id": `${SITE.url}/#webpage`,
+      url: canonical,
+      name: title,
+      description,
+      isPartOf: { "@id": `${SITE.url}/#website` },
+      primaryImageOfPage: { "@id": `${SITE.url}/#logo` },
+      inLanguage: "en",
+    },
+  ],
 };
 ---
 
@@ -64,20 +82,27 @@ const webpageJsonLd = {
     <link rel="manifest" href="/manifest.webmanifest" />
     <meta name="theme-color" content="#0a0a0a" />
     <meta name="robots" content="index, follow, max-image-preview:large" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content={SITE.name} />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content={SITE.name} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
-    <meta property="og:image" content={ogImage} />
+    <meta property="og:image" content={logoUrl} />
+    <meta property="og:image:width" content="512" />
+    <meta property="og:image:height" content="512" />
+    <meta property="og:image:alt" content={SITE.name} />
     <meta name="twitter:card" content="summary" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
-    <meta name="twitter:image" content={ogImage} />
+    <meta name="twitter:image" content={logoUrl} />
+    <meta name="twitter:image:alt" content={SITE.name} />
 
-    <script type="application/ld+json" set:html={JSON.stringify(websiteJsonLd)} />
-    <script type="application/ld+json" set:html={JSON.stringify(webpageJsonLd)} />
+    <script type="application/ld+json" set:html={JSON.stringify(schemaGraph)} />
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to content</a>
@@ -288,6 +313,12 @@ const webpageJsonLd = {
               } catch (e) {}
             }
           });
+
+        if ("serviceWorker" in navigator) {
+          window.addEventListener("load", function () {
+            navigator.serviceWorker.register("/sw.js").catch(function () {});
+          });
+        }
       })();
     </script>
   </body>
