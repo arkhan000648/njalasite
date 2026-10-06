@@ -35,7 +35,7 @@ export const LEAGUES: LeagueSection[] = [
   {
     id: "nfl",
     nav: "NFL",
-    h2: "NFL — Watch Football Games Online",
+    h2: "GK Streams NFL — Football Games Online",
     answer:
       "GKStreams collects public NFL game links for the regular season, playoffs, and Super Bowl so fans can open a matchup without creating an account.",
     paragraphs: [
@@ -53,7 +53,7 @@ export const LEAGUES: LeagueSection[] = [
     nav: "NBA",
     h2: "NBA — Basketball Links Without Sign-Up",
     answer:
-      "Open NBA links on GKStreams for regular-season nights, the play-in, playoffs, and Finals — free, with no registration step.",
+      "Open NBA links on GK Streams for regular-season nights, the play-in, playoffs, and Finals — free, with no registration step.",
     paragraphs: [
       "Basketball search intent spikes on back-to-back nights and deep into the postseason. GKStreams works the same way across the site: it presents collected stream links instead of storing files on its own servers.",
       "Use a live mirror above, then look for the matchup among available basketball links. It does not require an account wall to browse the list.",
