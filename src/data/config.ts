@@ -5,7 +5,7 @@ export const SITE = {
   title: "GKStreams",
   description:
     "GKStreams is a free sports streaming link aggregator for NFL, NBA, MLB, NHL, UFC, and soccer. It does not host content — see working mirrors, checked every 15 minutes.",
-  url: "https://gkstreams.com",
+  url: "https://gkstreams.pro",
   footerDisclaimer:
     "GKStreams lists publicly available mirror links only. It does not host, store, or stream any content. Links lead to third-party sites GKStreams does not control. For copyright or content removal, please contact the actual host or operator of the linked site.",
 } as const;
