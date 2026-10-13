@@ -85,6 +85,23 @@ if (html) {
   for (const [k, v] of checks) check(k, v);
 }
 
+// ── App download (single source: APP in config.ts) ────────────────
+const appUrlMatch = configSrc.match(/downloadUrl:\s*"([^"]+)"/);
+const appUrl = appUrlMatch ? appUrlMatch[1] : null;
+const taglineMatch = configSrc.match(/tagline:\s*"([^"]+)"/);
+const appTagline = taglineMatch ? taglineMatch[1] : null;
+check("config: APP.downloadUrl parsed", !!appUrl);
+check("config: APP.tagline parsed", !!appTagline);
+if (html && appUrl) {
+  const occurrences = html.split(appUrl).length - 1;
+  check("homepage: app link present exactly 2x (hero + article)", occurrences === 2);
+  check("homepage: hero Download App label", html.includes("Download App"));
+  check("homepage: hero android icon", html.includes("hero-cta__icon"));
+  if (appTagline) {
+    check("homepage: hero tagline from config", html.includes(appTagline));
+  }
+}
+
 // ── Every slug in HOME_SLUGS must have a built page ───────────────
 for (const slug of slugs) {
   const page = readIfExists(`dist/${slug}/index.html`);

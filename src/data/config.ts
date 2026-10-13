@@ -29,6 +29,15 @@ export interface MirrorDomain {
 /** Edit src/data/domains.json — one entry per mirror. */
 export const DOMAINS: MirrorDomain[] = domainsJson as MirrorDomain[];
 
+// ── Android app ─────────────────────────────────────────────────
+// Edit downloadUrl once — the hero button and the SEO-article button
+// both read this one place and stay in sync.
+export const APP = {
+  downloadUrl:
+    "https://github.com/arkhan66648/VVSTreamsdownload/releases/download/v3.1/VVStreams-3.1.apk",
+  tagline: "Ad-free experience",
+} as const;
+
 export type DomainStatus = "live" | "down" | "unknown";
 
 export interface DomainStatusEntry {
