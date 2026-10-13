@@ -213,6 +213,20 @@ const schemaGraph = {
 
         function applyStatus(data) {
           if (!data || !Array.isArray(data.domains)) return;
+          var isoEls = document.querySelectorAll("[data-updated-iso]");
+          if (isoEls.length) {
+            var bakedIso = isoEls[0].getAttribute("data-updated-iso") || "";
+            var fetchedMs = Date.parse(data.updatedAt);
+            var bakedMs = Date.parse(bakedIso);
+            if (
+              bakedIso &&
+              !Number.isNaN(fetchedMs) &&
+              !Number.isNaN(bakedMs) &&
+              fetchedMs < bakedMs
+            ) {
+              return;
+            }
+          }
           var map = {};
           data.domains.forEach(function (d) {
             if (d.status && d.status !== "live") return;
@@ -314,6 +328,7 @@ const schemaGraph = {
             if (checkedLabel) {
               el.textContent =
                 (el.getAttribute("data-updated-prefix") || "") + checkedLabel;
+              el.setAttribute("data-updated-iso", data.updatedAt || "");
             }
           });
         }

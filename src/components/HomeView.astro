@@ -19,6 +19,7 @@ try {
 }
 
 const updated = formatCheckedAtTime(snapshot?.updatedAt);
+const updatedIso = snapshot?.updatedAt ?? "";
 
 const liveCards = DOMAINS.map((d) => {
   const s = statusFor(snapshot, d.url);
@@ -74,7 +75,11 @@ const itemListJsonLd = {
     <p class="hero-meta">
       Links checked every 15 minutes
       <span class="hero-meta__sep" aria-hidden="true">·</span>
-      <span class="updated-at" data-updated-at data-updated-prefix="Updated "
+      <span
+        class="updated-at"
+        data-updated-at
+        data-updated-iso={updatedIso}
+        data-updated-prefix="Updated "
         >Updated {updated}</span
       >
     </p>
@@ -143,7 +148,11 @@ const itemListJsonLd = {
   <div class="empty-state" data-empty-state hidden={liveCards.length > 0}>
     <h2>No mirrors online</h2>
     <p>GKStreams re-checks shortly. Please try again soon.</p>
-    <p class="updated-at" data-updated-at data-updated-prefix="Updated "
+    <p
+      class="updated-at"
+      data-updated-at
+      data-updated-iso={updatedIso}
+      data-updated-prefix="Updated "
       >Updated {updated}</p
     >
   </div>
