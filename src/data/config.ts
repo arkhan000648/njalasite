@@ -16,7 +16,7 @@ export const SITE = {
 // The LAST entry is the live homepage. Earlier entries keep working as
 // forward pages that redirect to it. NEVER delete an entry that the
 // Cloudflare redirect still points at (that causes a redirect loop).
-export const HOME_SLUGS = ["index1"];
+export const HOME_SLUGS = ["index2"];
 export const ACTIVE_HOME = HOME_SLUGS[HOME_SLUGS.length - 1];
 export const HOME_PATH = `/${ACTIVE_HOME}/`;
 
