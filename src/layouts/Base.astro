@@ -1,5 +1,5 @@
 ---
-import { SITE, formatCheckedAtTime } from "../data/config";
+import { SITE, HOME_PATH, HOME_URL, formatCheckedAtTime } from "../data/config";
 import { NAV_ITEMS } from "../data/seo";
 import "../styles/global.css";
 
@@ -12,7 +12,7 @@ interface Props {
 const {
   title = SITE.title,
   description = SITE.description,
-  path = "/",
+  path = HOME_PATH,
 } = Astro.props;
 
 const canonical = new URL(path, SITE.url).toString();
@@ -33,12 +33,12 @@ const schemaGraph = {
   "@graph": [
     {
       "@type": "Organization",
-      "@id": `${SITE.url}/#organization`,
+      "@id": `${HOME_URL}#organization`,
       name: SITE.name,
-      url: SITE.url,
+      url: HOME_URL,
       logo: {
         "@type": "ImageObject",
-        "@id": `${SITE.url}/#logo`,
+        "@id": `${HOME_URL}#logo`,
         url: logoUrl,
         width: 512,
         height: 512,
@@ -47,21 +47,21 @@ const schemaGraph = {
     },
     {
       "@type": "WebSite",
-      "@id": `${SITE.url}/#website`,
+      "@id": `${HOME_URL}#website`,
       name: SITE.name,
-      url: SITE.url,
+      url: HOME_URL,
       description: SITE.description,
-      publisher: { "@id": `${SITE.url}/#organization` },
+      publisher: { "@id": `${HOME_URL}#organization` },
       inLanguage: "en",
     },
     {
       "@type": "WebPage",
-      "@id": `${SITE.url}/#webpage`,
+      "@id": `${HOME_URL}#webpage`,
       url: canonical,
       name: title,
       description,
-      isPartOf: { "@id": `${SITE.url}/#website` },
-      primaryImageOfPage: { "@id": `${SITE.url}/#logo` },
+      isPartOf: { "@id": `${HOME_URL}#website` },
+      primaryImageOfPage: { "@id": `${HOME_URL}#logo` },
       inLanguage: "en",
     },
   ],
@@ -108,7 +108,7 @@ const schemaGraph = {
 
     <header class="topbar">
       <div class="container topbar__inner">
-        <a class="brand" href="/">GK<span>Streams</span></a>
+        <a class="brand" href={HOME_PATH}>GK<span>Streams</span></a>
         <button
           class="nav-toggle"
           type="button"
@@ -359,7 +359,7 @@ const schemaGraph = {
       })();
     </script>
     <noscript>
-      <a href="/" target="_blank"
+      <a href={HOME_PATH} target="_blank"
         ><img
           src="//sstatic1.histats.com/0.gif?5054102&101"
           alt="free web hit counter"

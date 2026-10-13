@@ -26,11 +26,13 @@ const slugs = slugsMatch
   ? [...slugsMatch[1].matchAll(/["']([^"']+)["']/g)].map((m) => m[1])
   : [];
 const active = slugs[slugs.length - 1];
+const HOME_PATH = active ? `/${active}/` : null;
+const HOME_URL = active ? `${ROOT}${active}/` : null;
 
 check("config: HOME_SLUGS parsed", slugs.length > 0);
 console.log("     slugs=" + JSON.stringify(slugs) + " active=" + active);
 
-// ── Root homepage (dist/index.html) ───────────────────────────────
+// ── Root homepage (dist/index.html, shadow of active page) ────────
 const html = readIfExists("dist/index.html");
 check("dist/index.html exists", !!html);
 
@@ -60,11 +62,25 @@ if (html) {
     ["no heavy favicon.svg link", !html.includes('href="/icons/favicon.svg"')],
     ["app scroll id", html.includes('id="app"')],
     ["hero 15 min", html.includes("Links checked every 15 minutes")],
+    ["canonical = active home", html.includes(`rel="canonical" href="${HOME_URL}"`)],
+    ["og:url = active home", html.includes(`property="og:url" content="${HOME_URL}"`)],
+    ["no canonical to bare root", !html.includes(`rel="canonical" href="${ROOT}"`)],
     [
-      "canonical = root",
-      html.includes(`rel="canonical" href="${ROOT}"`),
+      "WebSite schema url = active home",
+      html.includes(`"url":"${HOME_URL}"`),
     ],
-    ["og:url = root", html.includes(`property="og:url" content="${ROOT}"`)],
+    [
+      "ItemList links use active home",
+      html.includes(`"${HOME_URL}#`),
+    ],
+    [
+      "internal brand link = active path",
+      html.includes(`class="brand" href="${HOME_PATH}"`),
+    ],
+    [
+      "internal body links = active path",
+      html.includes(`href="${HOME_PATH}"`),
+    ],
   ];
   for (const [k, v] of checks) check(k, v);
 }
@@ -77,19 +93,30 @@ for (const slug of slugs) {
 
   if (slug === active) {
     check(
-      `${slug}: active page canonical = root`,
-      page.includes(`rel="canonical" href="${ROOT}"`)
+      `${slug}: active page self-canonical = ${HOME_URL}`,
+      page.includes(`rel="canonical" href="${HOME_URL}"`)
     );
     check(`${slug}: active page has homepage content`, page.includes("GKStreams"));
     check(
       `${slug}: active page is NOT a forward stub`,
       !page.includes("http-equiv=\"refresh\"")
     );
+    if (html) {
+      const norm = (s) => s.replace(/\s+/g, " ").trim();
+      check(
+        "root shadow matches active page (whitespace-normalized)",
+        norm(html) === norm(page)
+      );
+    }
   } else {
     check(
       `${slug}: old slug is a noindex forward page`,
       page.includes('name="robots" content="noindex"') &&
         page.includes("location.replace(")
+    );
+    check(
+      `${slug}: forward page canonical = active home`,
+      page.includes(`rel="canonical" href="${HOME_URL}"`)
     );
   }
 }
@@ -98,11 +125,14 @@ for (const slug of slugs) {
 const nf = readIfExists("dist/404.html");
 check("dist/404.html exists", !!nf);
 if (nf) {
-  check("404: redirects to root", nf.includes('url=/"') || nf.includes('location.replace("/")'));
+  check(
+    "404: redirects straight to active path",
+    nf.includes(`url=${HOME_PATH}`) && nf.includes(`"${HOME_PATH}"`)
+  );
   check("404: noindex", nf.includes('name="robots" content="noindex"'));
 }
 
-// ── robots + sitemap must point at the root only ──────────────────
+// ── robots + sitemap must point at the active home only ───────────
 const robots = readIfExists("dist/robots.txt");
 check("dist/robots.txt exists", !!robots);
 if (robots) check("robots: allows crawling", robots.includes("Allow: /"));
@@ -112,7 +142,7 @@ check("dist/sitemap.xml exists", !!sitemap);
 if (sitemap) {
   const locs = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]);
   check("sitemap: single entry", locs.length === 1);
-  check("sitemap: entry is root", locs[0] === ROOT);
+  check("sitemap: entry is active home", locs[0] === HOME_URL);
 }
 
 // ── Static assets ─────────────────────────────────────────────────

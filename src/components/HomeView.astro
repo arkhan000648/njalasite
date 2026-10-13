@@ -1,7 +1,7 @@
 ---
 import MirrorCard from "./MirrorCard.astro";
 import SeoContent from "./SeoContent.astro";
-import { SITE, DOMAINS, formatCheckedAtTime, statusFor } from "../data/config";
+import { HOME_URL, DOMAINS, formatCheckedAtTime, statusFor } from "../data/config";
 import { LEAGUES, COMPETITORS, FAQS } from "../data/seo";
 
 let snapshot: import("../data/config").StatusSnapshot | null = null;
@@ -50,13 +50,13 @@ const itemListJsonLd = {
       "@type": "ListItem",
       position: i + 1,
       name: l.h2,
-      url: `${SITE.url}/#${l.id}`,
+      url: `${HOME_URL}#${l.id}`,
     })),
     ...COMPETITORS.map((c, i) => ({
       "@type": "ListItem",
       position: LEAGUES.length + i + 1,
       name: `${c.name} and GKStreams`,
-      url: `${SITE.url}/#${c.id}`,
+      url: `${HOME_URL}#${c.id}`,
     })),
   ],
 };

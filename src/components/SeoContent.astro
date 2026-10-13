@@ -1,6 +1,7 @@
 ---
 import type { LeagueSection, CompetitorSection, FaqItem } from "../data/seo";
 import { LEAGUES, MORE_SPORTS, COMPETITORS, FAQS } from "../data/seo";
+import { HOME_PATH } from "../data/config";
 
 interface Props {
   mirrorCount: number;
@@ -16,7 +17,7 @@ const faqs: FaqItem[] = FAQS;
   <section class="prose" aria-label="About GKStreams">
     <h2 id="about">What Is GKStreams?</h2>
     <p class="answer">
-      <a href="/"><strong>GKStreams</strong></a> is a free sports streaming
+      <a href={HOME_PATH}><strong>GKStreams</strong></a> is a free sports streaming
       <strong>link aggregator</strong> that collects public game links across
       major leagues. It does not host or upload content; fans open the collected
       links without sign-up.
@@ -148,7 +149,7 @@ const faqs: FaqItem[] = FAQS;
     }
     <p>
       For current access, return to the
-      <a href="#mirrors">live mirror list</a> at the top of <a href="/">GK Streams</a>.
+      <a href="#mirrors">live mirror list</a> at the top of <a href={HOME_PATH}>GK Streams</a>.
     </p>
   </section>
 

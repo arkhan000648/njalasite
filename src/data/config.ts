@@ -19,6 +19,7 @@ export const SITE = {
 export const HOME_SLUGS = ["index1"];
 export const ACTIVE_HOME = HOME_SLUGS[HOME_SLUGS.length - 1];
 export const HOME_PATH = `/${ACTIVE_HOME}/`;
+export const HOME_URL = `${SITE.url}${HOME_PATH}`;
 
 export interface MirrorDomain {
   url: string;

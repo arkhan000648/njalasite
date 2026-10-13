@@ -1,7 +1,5 @@
 ---
-import { SITE } from "../data/config";
-
-const root = `${SITE.url}/`;
+import { HOME_PATH, HOME_URL } from "../data/config";
 ---
 
 <!doctype html>
@@ -11,14 +9,17 @@ const root = `${SITE.url}/`;
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>GKStreams</title>
     <meta name="robots" content="noindex" />
-    <link rel="canonical" href={root} />
+    <link rel="canonical" href={HOME_URL} />
     <link rel="icon" href="/favicon.ico" sizes="any" />
-    <meta http-equiv="refresh" content="0; url=/" />
-    <script is:inline>
-      location.replace("/");
+    <meta http-equiv="refresh" content={`0; url=${HOME_PATH}`} />
+    <script is:inline define:vars={{ home: HOME_PATH }}>
+      location.replace(home);
     </script>
   </head>
   <body>
-    <p>Page not found. <a href="/">Go to the GKStreams homepage</a>.</p>
+    <p>
+      Page not found.
+      <a href={HOME_PATH}>Go to the GKStreams homepage</a>.
+    </p>
   </body>
 </html>

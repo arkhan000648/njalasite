@@ -1,11 +1,11 @@
 import type { APIRoute } from "astro";
-import { SITE } from "../data/config";
+import { HOME_URL } from "../data/config";
 
 export const GET: APIRoute = () => {
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>${SITE.url}/</loc>
+    <loc>${HOME_URL}</loc>
     <priority>1.0</priority>
   </url>
 </urlset>`;
