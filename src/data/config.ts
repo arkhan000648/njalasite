@@ -10,6 +10,16 @@ export const SITE = {
     "GKStreams lists publicly available mirror links only. It does not host, store, or stream any content. Links lead to third-party sites GKStreams does not control. For copyright or content removal, please contact the actual host or operator of the linked site.",
 } as const;
 
+// ── Homepage rotation ─────────────────────────────────────────────
+// To rotate the homepage, append the next slug:
+//   export const HOME_SLUGS = ["index1", "index2"];
+// The LAST entry is the live homepage. Earlier entries keep working as
+// forward pages that redirect to it. NEVER delete an entry that the
+// Cloudflare redirect still points at (that causes a redirect loop).
+export const HOME_SLUGS = ["index1"];
+export const ACTIVE_HOME = HOME_SLUGS[HOME_SLUGS.length - 1];
+export const HOME_PATH = `/${ACTIVE_HOME}/`;
+
 export interface MirrorDomain {
   url: string;
   label: string;

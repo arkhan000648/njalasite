@@ -1,0 +1,25 @@
+---
+import Base from "../layouts/Base.astro";
+import HomeView from "../components/HomeView.astro";
+import ForwardPage from "../components/ForwardPage.astro";
+import { SITE, HOME_SLUGS, ACTIVE_HOME } from "../data/config";
+
+export function getStaticPaths() {
+  return HOME_SLUGS.map((slug) => ({
+    params: { home: slug },
+    props: { active: slug === ACTIVE_HOME },
+  }));
+}
+
+const { active } = Astro.props;
+---
+
+{
+  active ? (
+    <Base path="/" title={SITE.title} description={SITE.description}>
+      <HomeView />
+    </Base>
+  ) : (
+    <ForwardPage />
+  )
+}

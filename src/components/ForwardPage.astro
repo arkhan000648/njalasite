@@ -1,0 +1,28 @@
+---
+import { SITE, HOME_PATH } from "../data/config";
+
+const target = HOME_PATH;
+const canonical = `${SITE.url}${HOME_PATH}`;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>GKStreams — page moved</title>
+    <meta name="robots" content="noindex" />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <meta http-equiv="refresh" content={`0; url=${target}`} />
+    <script is:inline define:vars={{ home: target }}>
+      location.replace(home);
+    </script>
+  </head>
+  <body>
+    <p>
+      GKStreams has moved.
+      <a href={target}>Continue to the homepage</a>.
+    </p>
+  </body>
+</html>

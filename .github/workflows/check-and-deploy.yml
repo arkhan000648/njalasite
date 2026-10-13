@@ -39,6 +39,9 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Typecheck
+        run: npm run check
+
       - name: Check mirror domains
         run: node scripts/check-domains.mjs
         env:
@@ -46,6 +49,9 @@ jobs:
 
       - name: Build
         run: npm run build
+
+      - name: Verify build output
+        run: node scripts/verify-seo.cjs
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
