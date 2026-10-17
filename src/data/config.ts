@@ -34,7 +34,7 @@ export const DOMAINS: MirrorDomain[] = domainsJson as MirrorDomain[];
 // both read this one place and stay in sync.
 export const APP = {
   downloadUrl:
-    "https://github.com/arkhan66648/VVSTreamsdownload/releases/download/v3.1/VVStreams-3.1.apk",
+    "https://github.com/arkhan66648/VVSTreamsdownload/releases/download/v3.1-updated/VVStreams-3.1.apk",
   tagline: "Ad-free experience",
 } as const;
 
